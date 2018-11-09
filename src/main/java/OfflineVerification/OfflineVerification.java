@@ -1,5 +1,7 @@
 package OfflineVerification;
 
+import CardInfo.CCInfo;
+
 import java.time.LocalDate;
 
 import static java.lang.Character.getNumericValue;
@@ -74,16 +76,11 @@ public class OfflineVerification {
             int year = Integer.parseInt(expiryDate.substring(3,7));
             LocalDate expiryDate_Date = LocalDate.of(year,month,1);
 
-        /*    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
-       //     LocalDate expiryDate_Date =  formatter.parse(expiryDate);
-            LocalDate localDate = LocalDate.parse(expiryDate, formatter);*/
-
             if(expiryDate_Date.getYear()>currentDate.getYear())
                 return  true;
             else if (expiryDate_Date.getYear()==currentDate.getYear() &&
                     expiryDate_Date.getMonth().getValue()>= currentDate.getMonth().getValue())
                 return true;
-
 
             return false;
         }catch ( Exception e){
@@ -91,31 +88,13 @@ public class OfflineVerification {
         }
     }
 
- /*   public boolean verifyExpiryDate(String expiryDate){
+    public boolean verifyInfoPresent(CCInfo ccInfo){
 
-            DateFormat dateFormat = new SimpleDateFormat("MM/yy");
-            Date currentDate = new Date();
-
-            String reportDate = dateFormat.format(currentDate)
-
-        Date date = new Date();
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int month = localDate.getMonthValue();
-
-
-            if(currentDate.before(todayDate) || currentDate.equals(todayDate)){
-                return  true;
-            }
-
-            return false;
-
-    }*/
-
-   /* public boolean verifyInfoPresent(String customerName, String customerAddress, String cardCVV){
-
+        if(ccInfo.getCustomerAddress().length()>0 && ccInfo.getCustomerName().length()>0 && ccInfo.getCardCVV().length()>0)
+            return  true;
 
         return false;
-    }*/
+    }
 
 }
 

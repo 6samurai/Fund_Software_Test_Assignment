@@ -161,5 +161,23 @@ public class OfflineVerificationTests {
     }
 
 
+    @Test
+    public void testVerifyOtherInfoIncluded(){
+        ccInfo = new CCInfo("Chris","222,Test","VISA","4111111111111111","11/2030","Test");;
+        OfflineVerification offlineVerification = new OfflineVerification();
+        boolean check = offlineVerification.verifyInfoPresent(ccInfo);
+
+        assertTrue(check);
+    }
+
+
+    @Test
+    public void testVerifyOtherInfoIncluded_MissingAddress(){
+        ccInfo = new CCInfo("Chris","","VISA","4111111111111111","11/2010","Test");;
+        OfflineVerification offlineVerification = new OfflineVerification();
+        boolean check = offlineVerification.verifyInfoPresent(ccInfo);
+
+        assertFalse(check);
+    }
 
 }
