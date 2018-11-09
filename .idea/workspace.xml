@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0e6bb08d-387e-48a4-bfd2-cd8fe8f02b1a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/OfflineVerification/OfflineVerification.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -15,7 +18,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/assignment$OfflineVerificationTests.ic" NAME="OfflineVerificationTests Coverage Results" MODIFIED="1541761350862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/assignment$OfflineVerificationTests_testVerifyExpiryDate_ValidDate.ic" NAME="OfflineVerificationTests.testVerifyExpiryDate_ValidDate Coverage Results" MODIFIED="1541769007842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>OfflineVerification.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/assignment$OfflineVerificationTests.ic" NAME="OfflineVerificationTests Coverage Results" MODIFIED="1541774850321" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>OfflineVerification.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/assignment$OfflineVerificationTests_testVerifyOperationLuhnCheck.ic" NAME="OfflineVerificationTests.testVerifyOperationLuhnCheck Coverage Results" MODIFIED="1541703243014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -23,7 +29,7 @@
     </SUITE>
   </component>
   <component name="CoverageViewManager">
-    <option name="myElementSize" value="59" />
+    <option name="myElementSize" value="51" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1491307553">
@@ -38,7 +44,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="4" />
+          <entry key="class" value="5" />
           <entry key="gitignore" value="1" />
           <entry key="iml" value="1" />
           <entry key="java" value="8" />
@@ -48,7 +54,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="4" />
+          <entry key="CLASS" value="5" />
           <entry key="IDEA_MODULE" value="1" />
           <entry key="JAVA" value="8" />
           <entry key="PLAIN_TEXT" value="2" />
@@ -57,12 +63,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3065" />
+          <entry key="java" value="4003" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3065" />
+          <entry key="JAVA" value="4003" />
         </counts>
       </usages-collector>
     </session>
@@ -70,25 +76,18 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/Transaction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/CardInfo/CCInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="319">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
               <folding>
                 <element signature="e#736#737#0" expanded="true" />
                 <element signature="e#777#778#0" expanded="true" />
                 <element signature="e#1004#1005#0" expanded="true" />
                 <element signature="e#1040#1041#0" expanded="true" />
+                <element signature="e#1166#1167#0" expanded="true" />
                 <element signature="e#1204#1205#0" expanded="true" />
+                <element signature="e#1380#1381#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -97,11 +96,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="80" column="38" lean-forward="true" selection-start-line="80" selection-start-column="38" selection-end-line="80" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="51">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -123,8 +119,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="139" column="19" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+            <state relative-caret-position="352">
+              <caret line="159" column="20" selection-start-line="159" selection-start-column="20" selection-end-line="159" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -153,8 +149,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="114" selection-start-line="114" selection-end-line="114" />
+            <state relative-caret-position="312">
+              <caret line="172" selection-start-line="172" selection-end-line="172" />
+              <folding>
+                <element signature="e#3002#3125#0" expanded="true" />
+                <element signature="e#3124#3125#0" expanded="true" />
+                <element signature="e#5842#5843#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -171,11 +172,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/TestMethod.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="49" selection-start-line="49" selection-end-line="49" />
+            <state relative-caret-position="292">
+              <caret line="57" selection-start-line="57" selection-end-line="57" />
               <folding>
+                <element signature="e#1403#1404#0" expanded="true" />
                 <element signature="e#1461#1462#0" expanded="true" />
+                <element signature="e#1669#1670#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/TestClass.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="40" selection-start-line="40" selection-end-line="40" />
             </state>
           </provider>
         </entry>
@@ -193,7 +205,14 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>p</find>
+      <find>&quot;11/4/2020&quot;</find>
+      <find>11/20&quot;</find>
+      <find>&quot;11/20&quot;</find>
     </findStrings>
+    <replaceStrings>
+      <replace>&quot;11/20&quot;</replace>
+      <replace>&quot;11/2020&quot;</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -311,6 +330,11 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="OfflineVerification" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="assignment" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fund_Software_Test_Assignment" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -319,7 +343,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541762458246" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541774849850" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Masters Testing/Fundamentals of Software Testing/Tutorials/tutorialsHelloWorld/pom.xml" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -352,7 +376,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OfflineVerificationTests.testVerifyOperationLuhnCheck" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Fund_Software_Test_Assignment" />
       <extension name="coverage">
         <pattern>
@@ -362,7 +386,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="OfflineVerification" />
       <option name="MAIN_CLASS_NAME" value="OfflineVerification.OfflineVerificationTests" />
-      <option name="METHOD_NAME" value="testVerifyOperationLuhnCheck" />
+      <option name="METHOD_NAME" value="testVerifyExpiryDate_ValidDate" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -418,18 +442,18 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.OfflineVerificationTests" />
-      <item itemvalue="JUnit.OfflineVerificationTests.testVerifyOperationLuhnCheck" />
       <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Blank" />
       <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_AmericanExpress" />
       <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_MasterCard" />
+      <item itemvalue="JUnit.OfflineVerificationTests.testVerifyExpiryDate_ValidDate" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.OfflineVerificationTests" />
+        <item itemvalue="JUnit.OfflineVerificationTests.testVerifyExpiryDate_ValidDate" />
         <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Blank" />
         <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_AmericanExpress" />
         <item itemvalue="JUnit.OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_MasterCard" />
-        <item itemvalue="JUnit.OfflineVerificationTests.testVerifyOperationLuhnCheck" />
       </list>
     </recent_temporary>
   </component>
@@ -447,40 +471,39 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="OfflineVerificationTests_testVerifyPrefixAndCardType_Valid_MasterCard - 2018.11.09 at 11h 33m 35s.xml">
-      <configuration name="OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_MasterCard" configurationId="JUnit" />
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 14m 25s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="OfflineVerificationTests - 2018.11.09 at 11h 34m 34s.xml">
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 16m 04s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 21m 27s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="OfflineVerificationTests - 2018.11.09 at 15h 38m 30s.xml">
       <configuration name="OfflineVerificationTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="OfflineVerificationTests_testVerifyPrefixAndCardType_Valid_AmericanExpress - 2018.11.09 at 11h 35m 02s.xml">
-      <configuration name="OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_AmericanExpress" configurationId="JUnit" />
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 42m 51s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="OfflineVerificationTests - 2018.11.09 at 11h 35m 33s.xml">
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 43m 00s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 45m 02s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="OfflineVerificationTests - 2018.11.09 at 15h 45m 48s.xml">
       <configuration name="OfflineVerificationTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="OfflineVerificationTests_testVerifyPrefixAndCardType_Valid_MasterCard - 2018.11.09 at 11h 35m 57s.xml">
-      <configuration name="OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_MasterCard" configurationId="JUnit" />
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 46m 00s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="OfflineVerificationTests_testVerifyPrefixAndCardType_Valid_AmericanExpress - 2018.11.09 at 11h 38m 06s.xml">
-      <configuration name="OfflineVerificationTests.testVerifyPrefixAndCardType_Valid_AmericanExpress" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="OfflineVerificationTests - 2018.11.09 at 11h 39m 52s.xml">
-      <configuration name="OfflineVerificationTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="OfflineVerificationTests_testVerifyPrefixAndCardType_Blank - 2018.11.09 at 11h 41m 09s.xml">
-      <configuration name="OfflineVerificationTests.testVerifyPrefixAndCardType_Blank" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="OfflineVerificationTests - 2018.11.09 at 12h 02m 07s.xml">
-      <configuration name="OfflineVerificationTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="OfflineVerificationTests - 2018.11.09 at 12h 02m 32s.xml">
-      <configuration name="OfflineVerificationTests" configurationId="JUnit" />
+    <history-entry file="OfflineVerificationTests_testVerifyExpiryDate_ValidDate - 2018.11.09 at 15h 46m 57s.xml">
+      <configuration name="OfflineVerificationTests.testVerifyExpiryDate_ValidDate" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20042644" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -492,7 +515,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.329718" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39479393" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -518,32 +541,20 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java</url>
-          <line>26</line>
-          <properties />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java</url>
-          <line>24</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java</url>
-          <line>26</line>
+          <line>23</line>
           <properties />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java</url>
-          <line>33</line>
+          <line>30</line>
           <properties />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java</url>
-          <line>35</line>
+          <line>32</line>
           <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
@@ -554,21 +565,65 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java</url>
-          <line>48</line>
+          <url>file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java</url>
+          <line>147</line>
           <properties />
-          <option name="timeStamp" value="8" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java</url>
+          <line>70</line>
+          <properties />
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JUnit">
-        <watch expression=" cardNumber.substring(0,2).contains(&quot;37&quot;)" language="JAVA" />
+        <watch expression="expiryDate_Date.getYear()" language="JAVA" />
+        <watch expression="currentDate.getYear()" language="JAVA" />
+        <watch expression="expiryDate_Date.getMonth().getValue()" language="JAVA" />
+        <watch expression="currentDate.getMonth().getValue()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>currentDate.getMonth().getValue()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>expiryDate_Date.getMonth().getValue()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDate.getYear()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>expiryDate_Date.getYear()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>todayDate</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDate</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>currentDate.equals(todayDate)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>cardNumber.substring(0,2).contains(&quot;37&quot;)</expression-string>
         <language-id>JAVA</language-id>
@@ -581,36 +636,6 @@
       </expression>
       <expression>
         <expression-string>cardNumber.substring(0,2)==&quot;37&quot;</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cardNumber.substring(0,2)==&quot;37&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cardNumber.substring(0,2)==&quot;34&quot; || cardNumber.substring(0,2)==&quot;37&quot;) &amp;&amp; cardNumber.length() ==15</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cardNumber.substring(0,1)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>card</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cardType.contains(&quot;American Express&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>cardNumber.charAt(i)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -665,30 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/TestMethod.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-          <folding>
-            <element signature="e#1461#1462#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/CardInfo/CCInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-          <folding>
-            <element signature="e#736#737#0" expanded="true" />
-            <element signature="e#777#778#0" expanded="true" />
-            <element signature="e#1004#1005#0" expanded="true" />
-            <element signature="e#1040#1041#0" expanded="true" />
-            <element signature="e#1204#1205#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/Assert.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="159">
@@ -705,13 +706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="114" selection-start-line="114" selection-end-line="114" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -719,10 +713,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/TestMethod.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
+          <folding>
+            <element signature="e#1403#1404#0" expanded="true" />
+            <element signature="e#1461#1462#0" expanded="true" />
+            <element signature="e#1669#1670#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/TestClass.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="172" selection-start-line="172" selection-end-line="172" />
+          <folding>
+            <element signature="e#3002#3125#0" expanded="true" />
+            <element signature="e#3124#3125#0" expanded="true" />
+            <element signature="e#5842#5843#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/CardInfo/CCInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#736#737#0" expanded="true" />
+            <element signature="e#777#778#0" expanded="true" />
+            <element signature="e#1004#1005#0" expanded="true" />
+            <element signature="e#1040#1041#0" expanded="true" />
+            <element signature="e#1166#1167#0" expanded="true" />
+            <element signature="e#1204#1205#0" expanded="true" />
+            <element signature="e#1380#1381#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/OfflineVerification/OfflineVerificationTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="139" column="19" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+        <state relative-caret-position="352">
+          <caret line="159" column="20" selection-start-line="159" selection-start-column="20" selection-end-line="159" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -731,11 +772,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/OfflineVerification/OfflineVerification.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="80" column="38" lean-forward="true" selection-start-line="80" selection-start-column="38" selection-end-line="80" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>

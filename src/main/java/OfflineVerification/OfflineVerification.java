@@ -1,8 +1,6 @@
 package OfflineVerification;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import java.time.LocalDate;
 
 import static java.lang.Character.getNumericValue;
 
@@ -62,25 +60,56 @@ public class OfflineVerification {
 
                 if (cardNumber.substring(0, 1).contains("4") && (cardNumber.length() == 16) || cardNumber.length() ==13)
                     return true;
+            }
+        }
+        return false;
+    }
 
+   public boolean verifyExpiryDate(String expiryDate){
+        try {
+
+            LocalDate currentDate = LocalDate.now();
+
+            int month = Integer.parseInt(expiryDate.substring(0,2));
+            int year = Integer.parseInt(expiryDate.substring(3,7));
+            LocalDate expiryDate_Date = LocalDate.of(year,month,1);
+
+        /*    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-yy");
+       //     LocalDate expiryDate_Date =  formatter.parse(expiryDate);
+            LocalDate localDate = LocalDate.parse(expiryDate, formatter);*/
+
+            if(expiryDate_Date.getYear()>currentDate.getYear())
+                return  true;
+            else if (expiryDate_Date.getYear()==currentDate.getYear() &&
+                    expiryDate_Date.getMonth().getValue()>= currentDate.getMonth().getValue())
+                return true;
+
+
+            return false;
+        }catch ( Exception e){
+            return  false;
+        }
+    }
+
+ /*   public boolean verifyExpiryDate(String expiryDate){
+
+            DateFormat dateFormat = new SimpleDateFormat("MM/yy");
+            Date currentDate = new Date();
+
+            String reportDate = dateFormat.format(currentDate)
+
+        Date date = new Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int month = localDate.getMonthValue();
+
+
+            if(currentDate.before(todayDate) || currentDate.equals(todayDate)){
+                return  true;
             }
 
+            return false;
 
-        }
-
-
-
-        return false;
-
-    }
-
-
-    public boolean verifyExpiryDate(String expiryDate){
-
-
-        return  false;
-    }
-
+    }*/
 
    /* public boolean verifyInfoPresent(String customerName, String customerAddress, String cardCVV){
 
