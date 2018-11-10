@@ -19,6 +19,7 @@ public class PaymentProcessorTests {
 
     CCInfo ccInfo;
     TransactionDatabase transactionDB;
+    BankProxy bank;
     @Before
     public  void setup(){
          transactionDB = new TransactionDatabase();
@@ -34,7 +35,7 @@ public class PaymentProcessorTests {
     @Test
     public void testVerifyOperation_LuhnCheck(){
         ccInfo = new CCInfo("Chris","222,Test","American Express","371449635398431","11/2020","1234");
-        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank);
         int check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
         assertEquals (0,check);
 
@@ -43,7 +44,7 @@ public class PaymentProcessorTests {
     @Test
     public void testVerifyOperation_LuhnCheck_Blank(){
         ccInfo = new CCInfo("Chris","222,Test","American Express","","11/2020","1234");
-        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank);
         int check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
         assertEquals (1,check);
     }
@@ -51,9 +52,9 @@ public class PaymentProcessorTests {
     @Test
     public void testVerifyOperation_LuhnCheck_InvalidValue(){
         ccInfo = new CCInfo("Chris","222,Test","American Express","2132132131312321","11/2020","1234");
-        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank);
         int check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
-        assertEquals (0,check);
+        assertEquals (1,check);
     }
 
     @Test
