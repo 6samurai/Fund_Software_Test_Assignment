@@ -16,7 +16,7 @@ public class TransactionDatabase {
         if(transaction == null){
 
         } else {
-            database.put(transaction.id ,transaction);
+            database.put(transaction.getId() ,transaction);
         }
     }
 

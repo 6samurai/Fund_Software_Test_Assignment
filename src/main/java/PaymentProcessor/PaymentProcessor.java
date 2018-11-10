@@ -1,13 +1,21 @@
 package PaymentProcessor;
 
+import Bank.BankProxy;
+import CardInfo.CCInfo;
+
 import static java.lang.Character.getNumericValue;
 
 public class PaymentProcessor {
 
-    public boolean verifyLuhn(String cardNumber){
+    BankProxy bank;
+    public PaymentProcessor(BankProxy bank){
+        this.bank = bank;
+    }
+
+    public int verifyLuhn(String cardNumber){
         try{
             if(cardNumber.length()==0)
-                return false;
+                return 1;
 
             else{
                 int value = 0;
@@ -25,13 +33,42 @@ public class PaymentProcessor {
                     total = total + value;
                 }
                 if(total%10 ==0)
-                    return  true;
+                    return  0;
             }
 
-            return  false;
+            return  1;
 
         }catch (Exception e){
-            return  false;
+            return  2;
         }
     }
+
+    public  int verifyOffline(CCInfo ccInfo){
+
+        return  0;
+
+    }
+
+    public int  processPayment(CCInfo ccInfo, long amount){
+
+        int verifyOperation = verifyLuhn(ccInfo.getCardNumber());
+        if(verifyOperation == 0){
+            verifyOperation = verifyOffline(ccInfo);
+            if(verifyOperation == 0){
+
+                long bankAuth = bank.auth(ccInfo,amount);
+                if(bankAuth>0){
+
+
+
+                } else if(bankAuth == -1){
+
+                }
+
+            } else  return verifyOperation;
+        } else return  verifyOperation;
+
+    return  0;
+    }
 }
+

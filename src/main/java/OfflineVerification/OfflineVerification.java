@@ -1,17 +1,13 @@
 package OfflineVerification;
 
 import CardInfo.CCInfo;
-
 import java.time.LocalDate;
-
-import static java.lang.Character.getNumericValue;
 
 public class OfflineVerification {
 
     public  OfflineVerification(){
 
     }
-
 
 
     public boolean verifyPrefixAndCardType(String cardNumber, String cardType){
