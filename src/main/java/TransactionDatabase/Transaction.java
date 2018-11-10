@@ -11,7 +11,7 @@ public class Transaction {
     private String state;
     private CCInfo ccInfo;
 
-    public Transaction(long id, long amount, String state, CCInfo ccInfo){
+    public Transaction(long id,  CCInfo ccInfo, long amount, String state){
         setId(id);
         setAmount(amount);
         setState(state);
@@ -38,7 +38,7 @@ public class Transaction {
         this.amount = value;
     }
 
-    public String state()
+    public String getState()
     {
         return this.state;
     }

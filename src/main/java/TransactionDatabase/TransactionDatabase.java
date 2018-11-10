@@ -20,6 +20,17 @@ public class TransactionDatabase {
         }
     }
 
+    public Transaction getTransaction(long id){
+
+        Transaction getTrans =  database.get(id);
+        if(getTrans != null)
+            return  getTrans;
+        else return  null;
+
+    }
+
+
+
 
 
 }
