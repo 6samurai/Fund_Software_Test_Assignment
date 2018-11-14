@@ -29,7 +29,9 @@ public class TransactionDatabase {
 
     }
 
-
+    public int countTransactions(){
+        return  database.size();
+    }
 
 
 

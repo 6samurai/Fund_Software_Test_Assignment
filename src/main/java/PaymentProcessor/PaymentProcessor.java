@@ -91,11 +91,11 @@ public class PaymentProcessor {
 
                     long bankAction = bank.auth(ccInfo, amount);
 
-                    if (Authorise(bankAction, currentTransaction) == 0) {
+                    if (Authorise(bankAction, currentTransaction)==0) {
 
 
                         if (operation == BankOperations.CAPTURE) {
-                            bankAction = bank.capture(amount);
+                            bankAction = bank.capture(getTransactionID);
                             return Capture(bankAction, currentTransaction);
                         }
                     } else if (operation == BankOperations.REFUND) {
@@ -240,7 +240,7 @@ public class PaymentProcessor {
 
     private int Authorise(long bankAction, Transaction currentTransaction) throws Exception {
 
-        if (bankAction == 0) {
+        if (bankAction > 0) {
             if (operation == BankOperations.AUTHORISE) {
                 currentTransaction.setState(operation.toString());
                 transactionDB.saveTransaction(currentTransaction);
@@ -278,7 +278,7 @@ public class PaymentProcessor {
 
             currentTransaction.setState(BankOperations.VOID.toString());
             transactionDB.saveTransaction(currentTransaction);
-            throw new UserError("Transaction has already been captured");
+            throw new UserError("Transaction has been voided");
 
         } else if (bankAction == -4) {
             throw new UnknownError();
