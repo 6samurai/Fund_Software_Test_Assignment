@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -21,7 +22,7 @@ public class PaymentProcessorTests {
     TransactionDatabase transactionDB;
     BankProxy bank;
     List<String> logs;
-
+    Long transactionID;
     @Before
     public void setup() {
         transactionDB = new TransactionDatabase();
@@ -40,9 +41,11 @@ public class PaymentProcessorTests {
         //setup
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
         long amount = 1000L;
-        BankProxy bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-1L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -59,9 +62,11 @@ public class PaymentProcessorTests {
         //setup
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
         long amount = 1000L;
-        BankProxy bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-2L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -77,9 +82,11 @@ public class PaymentProcessorTests {
         //setup
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
         long amount = 1000L;
-        BankProxy bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-3L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -92,15 +99,15 @@ public class PaymentProcessorTests {
     @Test
     public void testValidAuthorisationRequest() throws Exception {
 
-
         //setup
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
-        // Transaction transaction = new Transaction();
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         long amount = 1000L;
-        BankProxy bank = mock(BankProxy.class);
+        bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(10000L);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);

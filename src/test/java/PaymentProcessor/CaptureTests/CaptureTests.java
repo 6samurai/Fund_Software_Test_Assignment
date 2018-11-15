@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +24,7 @@ public class CaptureTests {
     TransactionDatabase transactionDB;
     BankProxy bank;
     List<String> logs;
+    Long transactionID;
 
     @Before
     public void setup() {
@@ -37,6 +39,7 @@ public class CaptureTests {
         ccInfo =null;
         logs.clear();
         bank = null;
+        transactionID = 0L;
     }
 
     @Test
@@ -44,11 +47,12 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         bank = mock(BankProxy.class);
-        long mockID = 371449635398431L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(mockID);
-        when(bank.capture(mockID)).thenReturn(0);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(0);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -57,7 +61,7 @@ public class CaptureTests {
         assertEquals(0, result);
         assertEquals(0,logs.size());
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("capture",transactionDB.getTransaction(mockID).getState());
+        assertEquals("capture",transactionDB.getTransaction(transactionID).getState());
     }
 
     @Test
@@ -65,16 +69,17 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+
         bank = mock(BankProxy.class);
-        long mockID = 371449635398431L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(mockID);
-        when(bank.capture(mockID)).thenReturn(-1);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(-1);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
-        //verify
         //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
@@ -86,17 +91,19 @@ public class CaptureTests {
     public void testInvalidCaptureProcess_TransactionAlreadyCaptured() {
 
         //setup
+
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+
         bank = mock(BankProxy.class);
-        long mockID = 371449635398431L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(mockID);
-        when(bank.capture(mockID)).thenReturn(-2);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(-2);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
-        //verify
         //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
@@ -110,22 +117,23 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         bank = mock(BankProxy.class);
-        long mockID = 371449635398431L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(mockID);
-        when(bank.capture(mockID)).thenReturn(-3);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(-3);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
-        //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has been voided"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("void",transactionDB.getTransaction(mockID).getState());
+        assertEquals("void",transactionDB.getTransaction(transactionID).getState());
     }
 
 
@@ -134,16 +142,17 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         bank = mock(BankProxy.class);
-        long mockID = 371449635398431L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(mockID);
-        when(bank.capture(mockID)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(-4);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
-        //verify
         //verify
         assertEquals(2, result);
         assertEquals(1,logs.size());

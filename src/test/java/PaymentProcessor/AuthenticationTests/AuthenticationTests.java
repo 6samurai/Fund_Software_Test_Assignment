@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +24,7 @@ public class AuthenticationTests {
     TransactionDatabase transactionDB;
     BankProxy bank;
     List<String> logs;
+    Long transactionID;
 
     @Before
     public void setup() {
@@ -45,9 +47,11 @@ public class AuthenticationTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         when(bank.auth(ccInfo, 1000)).thenReturn(371449635398431L);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -63,8 +67,10 @@ public class AuthenticationTests {
 
         long amount = 1000L;
         bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         when(bank.auth(ccInfo, amount)).thenReturn(-1L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -80,8 +86,10 @@ public class AuthenticationTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         when(bank.auth(ccInfo, amount)).thenReturn(-2L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -96,9 +104,11 @@ public class AuthenticationTests {
 
         //setup
         long amount = 1000L;
+        transactionID =  new Random().nextLong();
+        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-3L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);

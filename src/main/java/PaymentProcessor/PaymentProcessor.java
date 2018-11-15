@@ -20,12 +20,14 @@ public class PaymentProcessor {
     TransactionDatabase transactionDB;
     BankOperations operation;
     List<String> logs = new ArrayList<String>();
+    Long transactionID;
 
-    public PaymentProcessor(BankProxy bank, TransactionDatabase transactionDB, BankOperations operation, List<String> logs) {
+    public PaymentProcessor(BankProxy bank,Long transactionID, TransactionDatabase transactionDB, BankOperations operation, List<String> logs) {
         this.bank = bank;
         this.transactionDB = transactionDB;
         this.operation = operation;
         this.logs = logs;
+        this.transactionID = transactionID;
     }
 
 
@@ -64,15 +66,15 @@ public class PaymentProcessor {
         }
     }
 
-    public int verifyOffline(CCInfo ccInfo) throws Exception{
-            OfflineVerification offlineVerification = new OfflineVerification();
-            if (offlineVerification.verifyPrefixAndCardType(ccInfo.getCardNumber(), ccInfo.getCardType())) {
-                if (offlineVerification.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
-                    if (offlineVerification.verifyInfoPresent(ccInfo))
-                        return 0;
-                    else throw new UserError("Missing card Information");
-                } else throw new UserError("Card is expired");
-            } else throw new UserError("Invalid Prefix of card");
+    public int verifyOffline(CCInfo ccInfo) throws Exception {
+        OfflineVerification offlineVerification = new OfflineVerification();
+        if (offlineVerification.verifyPrefixAndCardType(ccInfo.getCardNumber(), ccInfo.getCardType())) {
+            if (offlineVerification.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
+                if (offlineVerification.verifyInfoPresent(ccInfo))
+                    return 0;
+                else throw new UserError("Missing card Information");
+            } else throw new UserError("Card is expired");
+        } else throw new UserError("Invalid Prefix of card");
 
 
     }
@@ -81,33 +83,47 @@ public class PaymentProcessor {
 
         try {
 
-            long getTransactionID = Long.parseLong(ccInfo.getCardNumber());
-            Transaction currentTransaction = new Transaction(getTransactionID, ccInfo, amount, "");
 
+            Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "");
+            //verify luhn operation
             if (verifyLuhn(ccInfo.getCardNumber())) {
-
+                //verify card details
                 int verifyOperation = verifyOffline(ccInfo);
                 if (verifyOperation == 0) {
 
+                    //authentication check
                     long bankAction = bank.auth(ccInfo, amount);
+                    int actionResult = Authorise(bankAction, currentTransaction);
 
-                    if (Authorise(bankAction, currentTransaction)==0) {
-
-
-                        if (operation == BankOperations.CAPTURE) {
-                            bankAction = bank.capture(getTransactionID);
-                            return Capture(bankAction, currentTransaction);
-                        }
-                    } else if (operation == BankOperations.REFUND) {
-                        bankAction = bank.refund(getTransactionID, amount);
-                        return Refund(bankAction, currentTransaction);
+                    if (operation == BankOperations.AUTHORISE) {
+                        return actionResult;
                     }
+
+                    if (actionResult == 0) {
+
+                        bankAction = bank.capture(transactionID);
+                        actionResult = Capture(bankAction, currentTransaction);
+                        if (operation == BankOperations.CAPTURE) {
+
+                          return  actionResult;
+                        } else{
+
+                            if (actionResult == 0) {
+                                if (operation == BankOperations.REFUND) {
+                                    bankAction = bank.refund(transactionID, amount);
+                                    return Refund(bankAction, currentTransaction);
+                                }
+                            }
+                        }
+                    }
+                    // if the resulting output is an error and moves out of one of the conditions from the above code
+                    return 2;
 
 
                 } else return verifyOperation;
             } else throw new UserError("Invalid Card Number");
 
-            return 0;
+
 
         } catch (UserError e) {
             logs.add(e.getMessage());
@@ -241,12 +257,7 @@ public class PaymentProcessor {
     private int Authorise(long bankAction, Transaction currentTransaction) throws Exception {
 
         if (bankAction > 0) {
-            if (operation == BankOperations.AUTHORISE) {
-                currentTransaction.setState(operation.toString());
-                transactionDB.saveTransaction(currentTransaction);
-            }
             return 0;
-
         } else if (bankAction == -1) {
             throw new UserError("Credit card details are invalid");
         } else if (bankAction == -2) {
