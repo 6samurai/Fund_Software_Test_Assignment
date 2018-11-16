@@ -266,7 +266,7 @@ public class PaymentProcessor {
             throw new UnknownError();
 
         }
-        return 2;
+        throw new UnknownError();
     }
 
     public int Capture(long bankAction, Transaction currentTransaction) throws Exception {
@@ -295,7 +295,7 @@ public class PaymentProcessor {
             throw new UnknownError();
 
         }
-        return 2;
+        throw new UnknownError();
     }
 
     public int Refund(long bankAction, Transaction currentTransaction) throws Exception {
@@ -329,7 +329,7 @@ public class PaymentProcessor {
             throw new UnknownError();
 
         }
-        return 2;
+        throw new UnknownError();
     }
 }
 
