@@ -1,9 +1,6 @@
 package PaymentProcessor.LuhnTests;
-
-import Bank.BankProxy;
 import CardInfo.CCInfo;
 import PaymentProcessor.PaymentProcessor;
-import TransactionDatabase.TransactionDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

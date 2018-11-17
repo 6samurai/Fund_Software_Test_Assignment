@@ -1,11 +1,11 @@
-package OfflineVerification;
+package VerifyOffline;
 
 import CardInfo.CCInfo;
 import java.time.LocalDate;
 
-public class OfflineVerification {
+public class VerifyOffline {
 
-    public  OfflineVerification(){
+    public VerifyOffline(){
 
     }
 
@@ -25,7 +25,7 @@ public class OfflineVerification {
                         && cardNumber.length() ==16)
                     return  true;
 
-            } else if (cardType.contains("VISA") && cardType.length() ==4 ) {
+            } else if (cardType.toUpperCase().contains("VISA") && cardType.length() ==4 ) {
 
                 if (cardNumber.substring(0, 1).contains("4") && (cardNumber.length() == 16) || cardNumber.length() ==13)
                     return true;
