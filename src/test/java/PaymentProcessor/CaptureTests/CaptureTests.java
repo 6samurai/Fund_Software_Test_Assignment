@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -47,8 +46,7 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
@@ -69,8 +67,7 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
 
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
@@ -93,8 +90,7 @@ public class CaptureTests {
         //setup
 
         long amount = 1000L;
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
 
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
@@ -117,8 +113,7 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         bank = mock(BankProxy.class);
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
@@ -142,8 +137,7 @@ public class CaptureTests {
 
         //setup
         long amount = 1000L;
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         bank = mock(BankProxy.class);
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);

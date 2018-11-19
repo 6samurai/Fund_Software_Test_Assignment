@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,9 +44,9 @@ public class RefundTests {
 
         //setup
         long amount = 1000L;
+        transactionID = 10L;
+
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(0);
@@ -69,8 +68,7 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-1);
@@ -83,8 +81,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction does not exist"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("refund",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
+
     }
     @Test
     public void testInvalidRefundProcess_TransactionHasNotBeenCaptured() {
@@ -92,8 +90,7 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-2);
@@ -106,8 +103,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has not been captured"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("refund",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
+
     }
 
     @Test
@@ -116,8 +113,7 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-3);
@@ -130,8 +126,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has already been refunded"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("refund",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
+
     }
 
     @Test
@@ -140,8 +136,7 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-4);
@@ -154,8 +149,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Refund is greater than amount captured"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("refund",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
+
     }
     @Test
     public void testInvalidRefundProcess_UnknownError() {
@@ -163,8 +158,7 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
-        transactionID =  new Random().nextLong();
-        transactionID = (transactionID>0)? transactionID : transactionID *-1;
+        transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-5);
@@ -177,7 +171,6 @@ public class RefundTests {
         assertEquals(2, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("refund",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
     }
 }
