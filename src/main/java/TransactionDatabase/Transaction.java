@@ -59,10 +59,6 @@ public class Transaction {
             this.state = "";
     }
 
-    public CCInfo getCcInfo()
-    {
-        return this.ccInfo;
-    }
     public void setCcInfo(CCInfo value)
     {
         this.ccInfo = value;

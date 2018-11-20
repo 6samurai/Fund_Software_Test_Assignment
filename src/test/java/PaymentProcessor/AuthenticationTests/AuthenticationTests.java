@@ -56,6 +56,7 @@ public class AuthenticationTests {
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
+        assertEquals("authorise",transactionDB.getTransaction(transactionID).getState());
         assertEquals(0, result);
     }
 
@@ -75,7 +76,10 @@ public class AuthenticationTests {
 
         //verify
         assertEquals(1, result);
-        assertTrue(logs.contains("Credit card details are invalid"));
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("Credit card details are invalid"));
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
 
     @Test

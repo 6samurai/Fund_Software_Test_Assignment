@@ -81,7 +81,8 @@ public class CaptureTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction does not exist"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
 
     @Test
@@ -104,7 +105,8 @@ public class CaptureTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has already been captured"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
 
 
@@ -124,9 +126,9 @@ public class CaptureTests {
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
-        assertEquals(1, result);
-        assertEquals(1,logs.size());
-        assertTrue(logs.contains("Transaction has been voided"));
+        assertEquals(0, result);
+        //assertEquals(1,logs.size());
+        //assertTrue(logs.contains("Transaction has been voided"));
         assertEquals(1,transactionDB.countTransactions());
         assertEquals("void",transactionDB.getTransaction(transactionID).getState());
     }
@@ -151,7 +153,8 @@ public class CaptureTests {
         assertEquals(2, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
 }
 

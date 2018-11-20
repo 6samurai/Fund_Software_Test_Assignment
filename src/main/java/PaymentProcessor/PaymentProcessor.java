@@ -90,54 +90,107 @@ public class PaymentProcessor {
         return false;
     }
 
-    public int processPayment(CCInfo ccInfo, long amount) {
+     public int processPayment(CCInfo ccInfo, long amount) {
+         Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "");
+
+         try {
+             if (OfflineVerification(ccInfo)) {
+                 currentTransaction.setState(BankOperations.OFFLINE_VER.toString());
+                 transactionDB.saveTransaction(currentTransaction);
+                 //authentication check
+                 long bankAction = bank.auth(ccInfo, amount);
+                 int actionResult = Authorise(bankAction,currentTransaction);
+
+                 if (operation == BankOperations.AUTHORISE) {
+                     return actionResult;
+                 }
+
+                 if (actionResult == 0 && currentTransaction.getState().contains(BankOperations.AUTHORISE.toString().toLowerCase())) {
+                     bankAction = bank.capture(transactionID);
+                     
+                         actionResult =  Capture(bankAction, currentTransaction);
+
+                         if (operation == BankOperations.CAPTURE) {
+                             return actionResult;
+                         }  else if (operation == BankOperations.REFUND && actionResult == 0) {
+
+                             bankAction = bank.refund(transactionID, amount);
+                             return Refund(bankAction, currentTransaction);
+                         }
+
+                 }
+             }
+
+         } catch (UserError e) {
+             setTransactionToInvalid(currentTransaction);
+             logs.add(e.getMessage());
+             return 1;
+
+         } catch (UnknownError e) {
+             setTransactionToInvalid(currentTransaction);
+             logs.add(e.getMessage());
+             return 2;
+
+         } catch (Exception e) {
+             setTransactionToInvalid(currentTransaction);
+             logs.add("An error has occurred");
+             return 2;
+         }
+         return 2;
+     }
+
+   /* public int processPayment(CCInfo ccInfo, long amount) {
+        Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "");
 
         try {
-            Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "");
-
             if (OfflineVerification(ccInfo)) {
-
                 //authentication check
-                long bankAction = bank.auth(ccInfo, amount);
-                int actionResult = Authorise(bankAction);
+                long bankAction;
 
                 if (operation == BankOperations.AUTHORISE) {
-                    return actionResult;
-                }
+                    bankAction = bank.auth(ccInfo, amount);
+                    return Authorise(bankAction, currentTransaction);
 
-                if (actionResult == 0) {
+                } else if (operation == BankOperations.CAPTURE) {
 
-                    if (operation == BankOperations.CAPTURE) {
+                    bankAction = bank.capture(transactionID);
+                    return Capture(bankAction, currentTransaction);
 
-                        bankAction = bank.capture(transactionID);
-                        return Capture(bankAction, currentTransaction);
+                } else if (operation == BankOperations.REFUND) {
 
-                    } else if (operation == BankOperations.REFUND) {
-
-                        bankAction = bank.refund(transactionID, amount);
-                        return Refund(bankAction, currentTransaction);
-                    }
+                    bankAction = bank.refund(transactionID, amount);
+                    return Refund(bankAction, currentTransaction);
                 }
             }
 
         } catch (UserError e) {
-            logs.add(e.getMessage());
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage() + " - Operation:"+ operation.toString() + " amount:" + amount + " Customer Info:"+ ccInfo.getCustomerName() + " Card Type:"+ ccInfo.getCardType() );
             return 1;
 
         } catch (UnknownError e) {
-            logs.add(e.getMessage());
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage() + " - "+ operation.toString() + " with amount " + amount + " and account information "+ ccInfo.getCustomerName() + " "+ ccInfo.getCardType() );
             return 2;
 
         } catch (Exception e) {
+            setTransactionToInvalid(currentTransaction);
             logs.add("An error has occurred");
             return 2;
         }
         return 2;
     }
+*/
+    private void setTransactionToInvalid(Transaction currentTransaction) {
+        currentTransaction.setState("invalid");
+        transactionDB.saveTransaction(currentTransaction);
+    }
 
-    private int Authorise(long bankAction) throws Exception {
+    private int Authorise(long bankAction, Transaction currentTransaction) throws Exception {
 
         if (bankAction > 0) {
+            currentTransaction.setState(BankOperations.AUTHORISE.toString());
+            transactionDB.saveTransaction(currentTransaction);
             return 0;
         } else if (bankAction == -1) {
             throw new UserError("Credit card details are invalid");
@@ -146,17 +199,22 @@ public class PaymentProcessor {
         } else if (bankAction == -3) {
             throw new UnknownError();
 
-        }
-        throw new UnknownError();
+        } else throw new UnknownError();
     }
 
     public int Capture(long bankAction, Transaction currentTransaction) throws Exception {
 
-
         if (bankAction == 0) {
-            currentTransaction.setState(operation.toString());
-            transactionDB.saveTransaction(currentTransaction);
-            return 0;
+            Transaction prevTransaction = transactionDB.getTransaction(currentTransaction.getId());
+
+            if(prevTransaction.getState().contains("authorise")){
+                currentTransaction.setState(BankOperations.CAPTURE.toString());
+                transactionDB.saveTransaction(currentTransaction);
+                return 0;
+            } else{
+                throw new UserError("Transaction does not exist");
+            }
+
 
         } else if (bankAction == -1) {
 
@@ -170,23 +228,22 @@ public class PaymentProcessor {
 
             currentTransaction.setState(BankOperations.VOID.toString());
             transactionDB.saveTransaction(currentTransaction);
-            throw new UserError("Transaction has been voided");
-
+            return 0;
         } else if (bankAction == -4) {
             throw new UnknownError();
 
-        }
-        throw new UnknownError();
+        } else throw new UnknownError();
     }
 
     public int Refund(long bankAction, Transaction currentTransaction) throws Exception {
 
-
         if (bankAction == 0) {
-
-            currentTransaction.setState(operation.toString());
-            transactionDB.saveTransaction(currentTransaction);
-            return 0;
+            Transaction prevTransaction = transactionDB.getTransaction(currentTransaction.getId());
+            if(prevTransaction.getState().contains("capture") && prevTransaction.getAmount() >= currentTransaction.getAmount()) {
+                currentTransaction.setState(BankOperations.REFUND.toString());
+                transactionDB.saveTransaction(currentTransaction);
+                return 0;
+            }else throw new UserError("Refund is greater than amount captured");
 
         } else if (bankAction == -1) {
 
@@ -209,8 +266,7 @@ public class PaymentProcessor {
 
             throw new UnknownError();
 
-        }
-        throw new UnknownError();
+        } else throw new UnknownError();
     }
 }
 

@@ -15,11 +15,11 @@ public class VerifyOffline {
         if(cardNumber.length() <13 || cardType.length() ==0)
             return  false;
         else{
-            if(cardType.contains("American Express") && cardType.length() ==16 ){
+            if(cardType.toLowerCase().contains("american express") && cardType.length() ==16 ){
                 if( (cardNumber.substring(0,2).contains("34") || cardNumber.substring(0,2).contains("37")) && cardNumber.length() ==15)
                     return  true;
 
-            } else if (cardType.contains("Mastercard") && cardType.length() ==10 ){
+            } else if (cardType.toLowerCase().contains("mastercard") && cardType.length() ==10 ){
 
                 if( (cardNumber.substring(0,2).contains("51") || cardNumber.substring(0,2).contains("52") || cardNumber.substring(0,2).contains("53") || cardNumber.substring(0,2).contains("54") || cardNumber.substring(0,2).contains("55"))
                         && cardNumber.length() ==16)

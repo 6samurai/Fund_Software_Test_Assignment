@@ -20,23 +20,18 @@ public class OfflineVerificationTests {
 
 
     CCInfo ccInfo;
-    TransactionDatabase transactionDB;
-    BankProxy bank;
     List<String> logs;
 
 
     @Before
     public void setup() {
-        transactionDB = new TransactionDatabase();
         logs = new ArrayList<String>();
    }
 
     @After
     public void teardown() {
-        transactionDB = null;
         ccInfo =null;
         logs.clear();
-        bank = null;
     }
 
     @Test
@@ -93,7 +88,7 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testInvalidOfflineVerification_AmericanExpressCard_CardNumberVisa() {
+    public void testInvalidOfflineVerification_CardType_AmericanExpress__CardNumber_Visa() {
         boolean errorThrown = false;
         boolean check = false;
         String errorMessage = "";

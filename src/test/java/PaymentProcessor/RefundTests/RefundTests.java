@@ -81,8 +81,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction does not exist"));
-        assertEquals(0,transactionDB.countTransactions());
-
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
     @Test
     public void testInvalidRefundProcess_TransactionHasNotBeenCaptured() {
@@ -103,7 +103,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has not been captured"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
 
     }
 
@@ -126,7 +127,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Transaction has already been refunded"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
 
     }
 
@@ -149,7 +151,8 @@ public class RefundTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("Refund is greater than amount captured"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
 
     }
     @Test
@@ -171,6 +174,7 @@ public class RefundTests {
         assertEquals(2, result);
         assertEquals(1,logs.size());
         assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
 }

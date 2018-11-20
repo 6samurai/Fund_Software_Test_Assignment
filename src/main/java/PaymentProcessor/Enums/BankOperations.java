@@ -4,6 +4,7 @@ public enum BankOperations {
     AUTHORISE,
     CAPTURE,
     REFUND,
-    VOID
+    VOID,
+    OFFLINE_VER
 
 }

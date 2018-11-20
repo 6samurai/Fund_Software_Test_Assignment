@@ -114,7 +114,11 @@ public class PaymentProcessorTests {
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(3,logs.size());
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(3,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_1).getState());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
+
 
     }
 
@@ -157,7 +161,9 @@ public class PaymentProcessorTests {
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(2,logs.size());
-        assertEquals(1,transactionDB.countTransactions());
+        assertEquals(3,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
 
     }
 
@@ -297,7 +303,11 @@ public class PaymentProcessorTests {
         assertEquals(1, result_operation_4);
         assertTrue(logs.get(2).contains("Refund is greater than amount captured"));
         assertEquals(3,logs.size());
-        assertEquals(1,transactionDB.countTransactions());
+        assertEquals(4,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
+        assertEquals("invalid",transactionDB.getTransaction(transactionID_4).getState());
+
 
     }
 
