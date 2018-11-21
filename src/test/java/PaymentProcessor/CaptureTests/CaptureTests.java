@@ -50,7 +50,7 @@ public class CaptureTests {
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -72,7 +72,7 @@ public class CaptureTests {
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-1);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -96,7 +96,7 @@ public class CaptureTests {
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-2);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -120,7 +120,7 @@ public class CaptureTests {
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-3);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -144,7 +144,7 @@ public class CaptureTests {
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);

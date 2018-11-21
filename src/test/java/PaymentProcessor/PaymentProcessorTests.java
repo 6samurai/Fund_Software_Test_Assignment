@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,13 +58,13 @@ public class PaymentProcessorTests {
         when(bank.refund(transactionID_3,amount_3)).thenReturn(0);
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID_1, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_2, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_3, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_3, amount_3);
         //verify
         assertEquals(0, result_operation_1);
@@ -77,7 +78,7 @@ public class PaymentProcessorTests {
 
     }
 
-    //two transactions have errors in the CCinfo and one transaction results an invalid transaction from the bank
+    //two transactions have errors in the CCinfo(ccInfo_1 missing card number - ccInfo_2 missing card number) and one transaction results an invalid transaction from the bank
     @Test
     public void testMultiple_ErrorTransactions() {
         //setup
@@ -101,22 +102,23 @@ public class PaymentProcessorTests {
         when(bank.capture(transactionID_3)).thenReturn(-1);
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID_1, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_2, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_3, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_3, amount_3);
         //verify
         assertEquals(1, result_operation_1);
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(3,logs.size());
-        assertEquals(3,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID_1).getState());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
+        assertEquals(1,transactionDB.countTransactions());
+        assertTrue(logs.get(0).contains("Invalid Card Number"));
+        assertTrue(logs.get(1).contains("Invalid Prefix of card"));
+        assertTrue(logs.get(2).contains("Transaction does not exist"));
         assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
 
 
@@ -146,13 +148,16 @@ public class PaymentProcessorTests {
         when(bank.capture(transactionID_3)).thenReturn(-1);
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID_1, transactionDB, BankOperations.CAPTURE, logs);
+
+        //valid operation
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_2, transactionDB, BankOperations.CAPTURE, logs);
+        //invalid prefix of card
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_3, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_3, amount_3);
         //verify
 
@@ -161,8 +166,11 @@ public class PaymentProcessorTests {
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(2,logs.size());
-        assertEquals(3,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
+        assertTrue(logs.get(0).contains("Invalid Prefix of card"));
+        assertTrue(logs.get(1).contains("Transaction does not exist"));
+
+        assertEquals(2,transactionDB.countTransactions());
+
         assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
 
     }
@@ -191,20 +199,20 @@ public class PaymentProcessorTests {
         when(bank.auth(ccInfo_1, amount_3)).thenReturn(transactionID_3);
         when(bank.capture(transactionID_3)).thenReturn(0);
 
-        when(bank.auth(ccInfo_1, amount_4)).thenReturn(transactionID_3);
+        when(bank.auth(ccInfo_1, amount_4)).thenReturn(transactionID_4);
         when(bank.refund(transactionID_4,amount_4)).thenReturn(0);
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID_1, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_2, transactionDB, BankOperations.REFUND, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_1, amount_2);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_3, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_1, amount_3);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_4, transactionDB, BankOperations.REFUND, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
         int result_operation_4 = paymentProcessor.processPayment(ccInfo_1, amount_4);
         //verify
 
@@ -239,10 +247,10 @@ public class PaymentProcessorTests {
 
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.REFUND, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_1, amount);
 
 
@@ -272,25 +280,29 @@ public class PaymentProcessorTests {
         when(bank.capture(transactionID_1)).thenReturn(0);
 
         when(bank.auth(ccInfo_1, amount_2)).thenReturn(transactionID_2);
+        when(bank.capture(transactionID_2)).thenReturn(0);
         when(bank.refund(transactionID_2,amount_2)).thenReturn(-1);
 
         when(bank.auth(ccInfo_1, amount_3)).thenReturn(transactionID_3);
+        when(bank.capture(transactionID_3)).thenReturn(0);
         when(bank.capture(transactionID_3)).thenReturn(-2);
 
-        when(bank.auth(ccInfo_1, amount_4)).thenReturn(transactionID_3);
+        when(bank.auth(ccInfo_1, amount_4)).thenReturn(transactionID_4);
+        when(bank.capture(transactionID_4)).thenReturn(0);
         when(bank.refund(transactionID_4,amount_4)).thenReturn(-4);
 
         //exercise
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID_1, transactionDB, BankOperations.CAPTURE, logs);
+        //valid transaction
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1);
-
-        paymentProcessor = new PaymentProcessor(bank,transactionID_2, transactionDB, BankOperations.REFUND, logs);
+        //invalid refund
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_1, amount_2);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_3, transactionDB, BankOperations.CAPTURE, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_1, amount_3);
 
-        paymentProcessor = new PaymentProcessor(bank,transactionID_4, transactionDB, BankOperations.REFUND, logs);
+        paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
         int result_operation_4 = paymentProcessor.processPayment(ccInfo_1, amount_4);
         //verify
 
@@ -311,5 +323,7 @@ public class PaymentProcessorTests {
 
     }
 
+
+    // CREATE A METHOD WHERE THE PREVIOUS TRANSACTION IS INCORRECTLY CALLED FROM THE BANK AND THE LOCAL TRANSACTION DATABASE IS REFERENCED
 
 }

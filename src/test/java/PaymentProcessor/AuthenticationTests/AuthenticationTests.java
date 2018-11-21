@@ -48,16 +48,17 @@ public class AuthenticationTests {
         long amount = 1000L;
         bank = mock(BankProxy.class);
         transactionID =  10L;
-        when(bank.auth(ccInfo, 1000)).thenReturn(371449635398431L);
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
-        assertEquals("authorise",transactionDB.getTransaction(transactionID).getState());
         assertEquals(0, result);
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("authorise",transactionDB.getTransaction(transactionID).getState());
     }
 
 
@@ -69,7 +70,7 @@ public class AuthenticationTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(-1L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
@@ -78,8 +79,7 @@ public class AuthenticationTests {
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Credit card details are invalid"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0,transactionDB.countTransactions());
     }
 
     @Test
@@ -90,14 +90,16 @@ public class AuthenticationTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(-2L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
         assertEquals(1, result);
-        assertTrue(logs.contains("Insufficient funds on credit card"));
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("Insufficient funds on credit card"));
+        assertEquals(0,transactionDB.countTransactions());
     }
 
     @Test
@@ -108,14 +110,16 @@ public class AuthenticationTests {
         transactionID =  10L;
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-3L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank,transactionID, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
 
         //exercise
         int result = paymentProcessor.processPayment(ccInfo, amount);
 
         //verify
         assertEquals(2, result);
-        assertTrue(logs.contains("An unknown error has occurred"));
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("An unknown error has occurred"));
+        assertEquals(0,transactionDB.countTransactions());
     }
 
 

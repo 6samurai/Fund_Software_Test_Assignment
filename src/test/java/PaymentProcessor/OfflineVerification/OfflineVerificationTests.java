@@ -1,17 +1,11 @@
 package PaymentProcessor.OfflineVerification;
-
-import Bank.BankProxy;
 import CardInfo.CCInfo;
-
 import PaymentProcessor.PaymentProcessor;
-import TransactionDatabase.TransactionDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,8 +40,8 @@ public class OfflineVerificationTests {
         }catch (Exception  e){
             errorThrown = true;
         }
+
         assertTrue(check);
-        assertFalse(errorThrown);
 
     }
 
@@ -65,8 +59,6 @@ public class OfflineVerificationTests {
             errorThrown = true;
         }
         assertTrue(check);
-        assertFalse(errorThrown);
-
     }
 
 
@@ -83,8 +75,6 @@ public class OfflineVerificationTests {
             errorThrown = true;
         }
         assertTrue(check);
-        assertFalse(errorThrown);
-
     }
 
     @Test

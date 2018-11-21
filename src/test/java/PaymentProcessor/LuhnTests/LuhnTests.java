@@ -46,5 +46,20 @@ public class LuhnTests {
         assertFalse(check);
     }
 
+    @Test
+    public void testVerifyOperation_LuhnCheck_Invalid_LetterCharacters() {
+        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "3714496353984dddd31", "11/2020", "1234");
+        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+        assertFalse(check);
+    }
+
+    @Test
+    public void testVerifyOperation_LuhnCheck_Invalid_SpecialCharacters() {
+        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398!!@#!431", "11/2020", "1234");
+        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+        assertFalse(check);
+    }
 
 }
