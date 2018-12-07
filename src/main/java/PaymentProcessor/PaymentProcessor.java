@@ -2,14 +2,15 @@ package PaymentProcessor;
 
 import Bank.BankProxy;
 import CardInfo.CCInfo;
-import PaymentProcessor.Enums.BankOperations;
 import PaymentProcessor.ErrorMessages.UnknownError;
 import PaymentProcessor.ErrorMessages.UserError;
 import TransactionDatabase.Transaction;
 import TransactionDatabase.TransactionDatabase;
+import TransactionDatabase.enums.States;
 import VerifyOffline.VerifyOffline;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static java.lang.Character.getNumericValue;
@@ -18,21 +19,21 @@ public class PaymentProcessor {
 
     BankProxy bank;
     TransactionDatabase transactionDB;
-    BankOperations operation;
     List<String> logs = new ArrayList<String>();
-    // Long transactionID;
 
-    public PaymentProcessor(BankProxy bank, TransactionDatabase transactionDB, BankOperations operation, List<String> logs) {
+
+    public PaymentProcessor(BankProxy bank, TransactionDatabase transactionDB, List<String> logs) {
         this.bank = bank;
         this.transactionDB = transactionDB;
-        this.operation = operation;
-        this.logs = logs;
 
+        this.logs = logs;
     }
 
+    public PaymentProcessor(List<String> logs) {
+        this.logs = logs;
+    }
 
     public PaymentProcessor() {
-
     }
 
     public boolean verifyLuhn(String cardNumber) {
@@ -92,30 +93,31 @@ public class PaymentProcessor {
         return false;
     }
 
-    public int processPayment(CCInfo ccInfo, long amount) {
-        Transaction currentTransaction = new Transaction(-1L, ccInfo, amount, "");
+ /*   public int processPayment(CCInfo ccInfo, long amount) {
+
+        Calendar presentDate  = getPresentDate();
+
+        Transaction currentTransaction = new Transaction(-1L, ccInfo, amount, "", presentDate);
         try {
             if (OfflineVerification(ccInfo)) {
-
-                // currentTransaction.setState(BankOperations.OFFLINE_VER.toString());
-                //  transactionDB.saveTransaction(currentTransaction);
 
                 //authentication check
                 long bankAction = bank.auth(ccInfo, amount);
                 int actionResult = Authorise(bankAction, currentTransaction);
 
-                if (operation == BankOperations.AUTHORISE) {
+                if (operation == States.AUTHORISE) {
                     return actionResult;
                 }
 
-                if (actionResult == 0 && currentTransaction.getState().contains(BankOperations.AUTHORISE.toString().toLowerCase())) {
+                //since operation is not authorise - the resulting actions are either cpature or refund
+                if (actionResult == 0 && currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase())) {
                     bankAction = bank.capture(currentTransaction.getId());
 
                     actionResult = Capture(bankAction, currentTransaction);
 
-                    if (operation == BankOperations.CAPTURE) {
+                    if (operation == States.CAPTURE) {
                         return actionResult;
-                    } else if (operation == BankOperations.REFUND && actionResult == 0) {
+                    } else if (operation == States.REFUND && actionResult == 0) {
 
                         bankAction = bank.refund(currentTransaction.getId(), amount);
                         return Refund(bankAction, currentTransaction);
@@ -124,6 +126,7 @@ public class PaymentProcessor {
                 }
             }
 
+            throw new UnknownError();
         } catch (UserError e) {
             setTransactionToInvalid(currentTransaction);
             logs.add(e.getMessage());
@@ -140,7 +143,93 @@ public class PaymentProcessor {
             return 2;
         }
         return 2;
+    }*/
+
+    public int processPayment(CCInfo ccInfo, long amount, String state, long transactionID) {
+
+        Calendar presentDate = getPresentDate();
+
+        Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "", presentDate);
+        try {
+
+            long bankAction = -1;
+            int actionResult = 2;
+            if (OfflineVerification(ccInfo)) {
+                //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
+                // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
+                if (state.toLowerCase().contains(States.CAPTURE.toString().toLowerCase())) {
+
+                    bankAction = bank.capture(transactionID);
+                    actionResult = Capture(bankAction, transactionID);
+
+                } else if (state.toLowerCase().contains(States.REFUND.toString().toLowerCase())) {
+
+                    bankAction = bank.refund(transactionID, amount);
+                    actionResult = Refund(bankAction, amount, transactionID);
+
+                } else {
+                    throw new UserError("Invalid operation selected");
+
+                }
+            }
+            return actionResult;
+
+        } catch (UserError e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage());
+            return 1;
+
+        } catch (UnknownError e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage());
+            return 2;
+
+        } catch (Exception e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add("An error has occurred");
+            return 2;
+        }
     }
+
+    public int processPayment(CCInfo ccInfo, long amount, String state) {
+
+        Calendar presentDate = getPresentDate();
+
+        Transaction currentTransaction = new Transaction(-1L, ccInfo, amount, "", presentDate);
+        try {
+
+            long bankAction = -1;
+            int actionResult = 2;
+            if (OfflineVerification(ccInfo)) {
+
+                if (state.toLowerCase().contains(States.AUTHORISE.toString().toLowerCase())) {
+                    bankAction = bank.auth(ccInfo, amount);
+                    actionResult = Authorise(bankAction, currentTransaction);
+
+                } else {
+                    throw new UserError("Invalid operation selected");
+
+                }
+            }
+            return actionResult;
+
+        } catch (UserError e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage());
+            return 1;
+
+        } catch (UnknownError e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage());
+            return 2;
+
+        } catch (Exception e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add("An error has occurred");
+            return 2;
+        }
+    }
+
 
     private void setTransactionToInvalid(Transaction currentTransaction) {
         if (currentTransaction.getId() != -1) {
@@ -150,29 +239,36 @@ public class PaymentProcessor {
 
     }
 
-    private int Authorise(long bankAction, Transaction currentTransaction) throws Exception {
+    private int Authorise(long transactionID, Transaction currentTransaction) throws Exception {
 
-        if (bankAction > 0) {
-            currentTransaction.setId(bankAction);
-            currentTransaction.setState(BankOperations.AUTHORISE.toString());
+        if (transactionID > 0) {
+            currentTransaction.setId(transactionID);
+            currentTransaction.setState(States.AUTHORISE.toString());
             transactionDB.saveTransaction(currentTransaction);
             return 0;
-        } else if (bankAction == -1) {
+        } else if (transactionID == -1) {
             throw new UserError("Credit card details are invalid");
-        } else if (bankAction == -2) {
+        } else if (transactionID == -2) {
             throw new UserError("Insufficient funds on credit card");
-        } else if (bankAction == -3) {
+        } else if (transactionID == -3) {
             throw new UnknownError();
 
         } else throw new UnknownError();
     }
 
-    public int Capture(long bankAction, Transaction currentTransaction) throws Exception {
+    public int Capture(long bankAction, long transactionID) throws Exception {
 
-        if (bankAction == 0) {
+        Transaction currentTransaction = transactionDB.getTransaction(transactionID);
 
-            if (currentTransaction.getState().contains("authorise")) {
-                currentTransaction.setState(BankOperations.CAPTURE.toString());
+        Calendar presentDate = getPresentDate();
+        Calendar possibleWeek = currentTransaction.getDate();
+        possibleWeek.add(Calendar.WEEK_OF_YEAR, +1);
+
+
+        if (bankAction == 0 && possibleWeek.compareTo(presentDate) >= 0) {
+
+            if (currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase())) {
+                currentTransaction.setState(States.CAPTURE.toString());
                 transactionDB.saveTransaction(currentTransaction);
                 return 0;
             } else {
@@ -188,9 +284,9 @@ public class PaymentProcessor {
 
             throw new UserError("Transaction has already been captured");
 
-        } else if (bankAction == -3) {
+        } else if (bankAction == -3 || possibleWeek.compareTo(currentTransaction.getDate()) < 0) {
 
-            currentTransaction.setState(BankOperations.VOID.toString());
+            currentTransaction.setState(States.VOID.toString());
             transactionDB.saveTransaction(currentTransaction);
             return 0;
         } else if (bankAction == -4) {
@@ -199,12 +295,17 @@ public class PaymentProcessor {
         } else throw new UnknownError();
     }
 
-    public int Refund(long bankAction, Transaction currentTransaction) throws Exception {
+    public int Refund(long bankAction, long amount, long transactionID) throws Exception {
+        Transaction currentTransaction = transactionDB.getTransaction(transactionID);
 
-        if (bankAction == 0) {
-            Transaction prevTransaction = transactionDB.getTransaction(currentTransaction.getId());
-            if (prevTransaction.getState().contains("capture") && prevTransaction.getAmount() >= currentTransaction.getAmount()) {
-                currentTransaction.setState(BankOperations.REFUND.toString());
+        Calendar presentDate = getPresentDate();
+        Calendar monthRefund = currentTransaction.getDate();
+        monthRefund.add(Calendar.MONTH, +1);
+
+        if (bankAction == 0 && monthRefund.compareTo(presentDate) >= 0) {
+
+            if (currentTransaction.getState().contains(States.CAPTURE.toString().toLowerCase()) && currentTransaction.getAmount() == amount) {
+                currentTransaction.setState(States.REFUND.toString());
                 transactionDB.saveTransaction(currentTransaction);
                 return 0;
             } else throw new UserError("Refund is greater than amount captured");
@@ -231,6 +332,14 @@ public class PaymentProcessor {
             throw new UnknownError();
 
         } else throw new UnknownError();
+    }
+
+    private Calendar getPresentDate() {
+        Calendar presentWeek = Calendar.getInstance();
+        presentWeek.set(Calendar.HOUR_OF_DAY, 0);
+        presentWeek.set(Calendar.MINUTE, 0);
+        presentWeek.set(Calendar.SECOND, 0);
+        return presentWeek;
     }
 }
 

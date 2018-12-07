@@ -1,11 +1,15 @@
 package PaymentProcessor.LuhnTests;
+
 import CardInfo.CCInfo;
+import CardInfo.enums.CardTypes;
 import PaymentProcessor.PaymentProcessor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class LuhnTests {
 
@@ -23,9 +27,10 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", CardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+
         assertTrue(check);
 
     }
@@ -43,6 +48,7 @@ public class LuhnTests {
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "2132132131312321", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+
         assertFalse(check);
     }
 
@@ -51,6 +57,7 @@ public class LuhnTests {
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "3714496353984dddd31", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+
         assertFalse(check);
     }
 
@@ -59,6 +66,7 @@ public class LuhnTests {
         ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398!!@#!431", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+
         assertFalse(check);
     }
 

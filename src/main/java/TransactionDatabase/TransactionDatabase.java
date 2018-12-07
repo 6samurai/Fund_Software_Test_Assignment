@@ -8,7 +8,6 @@ public class TransactionDatabase {
 
     public TransactionDatabase(){
         database = new HashMap<Long, Transaction>();
-
     }
 
     public void saveTransaction(Transaction transaction){

@@ -2,16 +2,21 @@ package PaymentProcessor.CaptureTests;
 
 import Bank.BankProxy;
 import CardInfo.CCInfo;
-import PaymentProcessor.Enums.BankOperations;
+
+import CardInfo.enums.CardTypes;
 import PaymentProcessor.PaymentProcessor;
+import PaymentProcessor.enums.TestBankOperation;
 import TransactionDatabase.TransactionDatabase;
+import  TransactionDatabase.Transaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import static java.util.Calendar.getInstance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -29,7 +34,8 @@ public class CaptureTests {
     public void setup() {
         transactionDB = new TransactionDatabase();
         logs = new ArrayList<String>();
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", CardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
+
     }
 
     @After
@@ -45,15 +51,19 @@ public class CaptureTests {
     public void testValidCaptureProcess() {
 
         //setup
+
         long amount = 1000L;
         transactionID = 10L;
+
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(0);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+
+        int result = paymentProcessor.processPayment(ccInfo, amount,  TestBankOperation.CAPTURE.toString(),transactionID);
 
         //verify
         assertEquals(0, result);
@@ -68,14 +78,16 @@ public class CaptureTests {
         //setup
         long amount = 1000L;
         transactionID = 10L;
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-1);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,  logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURE.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -92,14 +104,16 @@ public class CaptureTests {
 
         long amount = 1000L;
         transactionID = 10L;
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-2);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURE.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -116,14 +130,17 @@ public class CaptureTests {
         //setup
         long amount = 1000L;
         transactionID = 10L;
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+
         bank = mock(BankProxy.class);
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-3);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURE.toString(),transactionID);
 
         //verify
         assertEquals(0, result);
@@ -140,14 +157,17 @@ public class CaptureTests {
         //setup
         long amount = 1000L;
         transactionID = 10L;
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+
         bank = mock(BankProxy.class);
 
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
         when(bank.capture(transactionID)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.CAPTURE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURE.toString(),transactionID);
 
         //verify
         assertEquals(2, result);

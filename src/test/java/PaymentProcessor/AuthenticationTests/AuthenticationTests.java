@@ -2,9 +2,12 @@ package PaymentProcessor.AuthenticationTests;
 
 import Bank.BankProxy;
 import CardInfo.CCInfo;
-import PaymentProcessor.Enums.BankOperations;
+
 import PaymentProcessor.PaymentProcessor;
+import PaymentProcessor.enums.TestCardTypes;
+import PaymentProcessor.enums.TestBankOperation;
 import TransactionDatabase.TransactionDatabase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +32,7 @@ public class AuthenticationTests {
     public void setup() {
         transactionDB = new TransactionDatabase();
         logs = new ArrayList<String>();
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
-
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
     }
 
     @After
@@ -50,10 +52,10 @@ public class AuthenticationTests {
         transactionID =  10L;
         when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
 
         //verify
         assertEquals(0, result);
@@ -70,10 +72,10 @@ public class AuthenticationTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(-1L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
 
         //verify
         assertEquals(1, result);
@@ -90,10 +92,10 @@ public class AuthenticationTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(-2L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
 
         //verify
         assertEquals(1, result);
@@ -110,10 +112,10 @@ public class AuthenticationTests {
         transactionID =  10L;
         bank = mock(BankProxy.class);
         when(bank.auth(ccInfo, amount)).thenReturn(-3L);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.AUTHORISE, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
 
         //verify
         assertEquals(2, result);

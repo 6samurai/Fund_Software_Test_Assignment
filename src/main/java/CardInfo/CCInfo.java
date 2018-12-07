@@ -1,5 +1,7 @@
 package CardInfo;
 
+import CardInfo.enums.CardTypes;
+
 public class CCInfo {
     private String customerName;
     private String customerAddress;
@@ -43,7 +45,11 @@ public class CCInfo {
     }
     public void setCardType(String value)
     {
-        this.cardType = value;
+        for (CardTypes val: CardTypes.values()) {
+
+            if(val.toString().toLowerCase().contains( value.toLowerCase()))
+                this.cardType = value.toLowerCase();
+        }
     }
 
     public String getCardNumber()

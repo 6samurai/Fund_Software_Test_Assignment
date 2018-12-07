@@ -2,14 +2,17 @@ package PaymentProcessor.RefundTests;
 
 import Bank.BankProxy;
 import CardInfo.CCInfo;
-import PaymentProcessor.Enums.BankOperations;
 import PaymentProcessor.PaymentProcessor;
+import PaymentProcessor.enums.TestBankOperation;
+import PaymentProcessor.enums.TestCardTypes;
 import TransactionDatabase.TransactionDatabase;
+import TransactionDatabase.Transaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +31,7 @@ public class RefundTests {
     public void setup() {
         transactionDB = new TransactionDatabase();
         logs = new ArrayList<String>();
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
     }
 
     @After
@@ -45,15 +48,17 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         transactionID = 10L;
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
-        when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
+    //    when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
+    //    when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(0);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(0, result);
@@ -69,13 +74,16 @@ public class RefundTests {
         long amount = 1000L;
         bank = mock(BankProxy.class);
         transactionID = 10L;
-        when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
+
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+        //   when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
+     //   when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-1);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -91,13 +99,16 @@ public class RefundTests {
         long amount = 1000L;
         bank = mock(BankProxy.class);
         transactionID = 10L;
-        when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
+
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+      //  when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
+     //   when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-2);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -116,12 +127,14 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+     //   when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-3);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+         int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -140,12 +153,14 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+      //  when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,  logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(1, result);
@@ -163,12 +178,14 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
         when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
-        when(bank.refund(transactionID,amount)).thenReturn(-5);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, BankOperations.REFUND, logs);
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        transactionDB.saveTransaction(auth_Transaction);
+     //   when(bank.capture(transactionID)).thenReturn(0);
+       when(bank.refund(transactionID,amount)).thenReturn(-5);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUND.toString(),transactionID);
 
         //verify
         assertEquals(2, result);
