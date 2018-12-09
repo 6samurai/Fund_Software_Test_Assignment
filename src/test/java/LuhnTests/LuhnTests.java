@@ -1,8 +1,9 @@
-package PaymentProcessor.LuhnTests;
+package LuhnTests;
 
 import CardInfo.CCInfo;
 import CardInfo.enums.CardTypes;
 import PaymentProcessor.PaymentProcessor;
+import PaymentProcessor.enums.TestCardTypes;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck_Blank() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test",  TestCardTypes.AMERICAN_EXPRESS.toString(), "", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
         assertFalse(check);
@@ -45,7 +46,7 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck_InvalidValue() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "2132132131312321", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test",  TestCardTypes.AMERICAN_EXPRESS.toString(), "2132132131312321", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
 
@@ -54,7 +55,7 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck_Invalid_LetterCharacters() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "3714496353984dddd31", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "3714496353984dddd31", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
 
@@ -63,7 +64,7 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck_Invalid_SpecialCharacters() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "371449635398!!@#!431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test",  TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398!!@#!431", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
 
@@ -72,7 +73,7 @@ public class LuhnTests {
 
     @Test
     public void testVerifyOperation_LuhnCheck_Invalid_NoDigits() {
-        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "assererwer!!@#!431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test",  TestCardTypes.AMERICAN_EXPRESS.toString(), "assererwer!!@#!431", "11/2020", "1234");
         PaymentProcessor paymentProcessor = new PaymentProcessor();
         boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
 

@@ -1,4 +1,4 @@
-package PaymentProcessor.OfflineVerification;
+package OfflineVerification;
 import CardInfo.CCInfo;
 import PaymentProcessor.PaymentProcessor;
 import PaymentProcessor.enums.TestCardTypes;
@@ -35,7 +35,7 @@ public class OfflineVerificationTests {
         boolean check = false;
         try{
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
             assertEquals(0,logs.size());
 
@@ -46,7 +46,6 @@ public class OfflineVerificationTests {
         assertTrue(check);
 
     }
-
 
     @Test
     public void testValid_OfflineVerification_Visa() {
@@ -54,7 +53,7 @@ public class OfflineVerificationTests {
         boolean check = false;
         try{
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2020", "123");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
             assertEquals(0,logs.size());
 
@@ -65,14 +64,13 @@ public class OfflineVerificationTests {
         assertTrue(check);
     }
 
-
     @Test
     public void testValid_OfflineVerification_Mastercard() {
         boolean errorThrown = false;
         boolean check = false;
         try{
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5105105105105100", "11/2020", "124");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
             assertEquals(0,logs.size());
 
@@ -88,8 +86,8 @@ public class OfflineVerificationTests {
         boolean check = false;
         String errorMessage = "";
         try{
-            ccInfo = new CCInfo("Chris", "222,Test", "American Express", "4111111111111111", "11/2020", "1234");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            ccInfo = new CCInfo("Chris", "222,Test",  TestCardTypes.AMERICAN_EXPRESS.toString(), "4111111111111111", "11/2020", "1234");
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
 
         }catch (Exception  e){
@@ -102,7 +100,6 @@ public class OfflineVerificationTests {
 
     }
 
-
     @Test
     public void testInvalid_OfflineVerification_ExpiredCard() {
         boolean errorThrown = false;
@@ -110,7 +107,7 @@ public class OfflineVerificationTests {
         String errorMessage = "";
         try{
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2000", "1234");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
             assertEquals(1,logs.size());
             assertTrue(logs.contains("An unknown error has occurred"));
@@ -121,21 +118,18 @@ public class OfflineVerificationTests {
         }
         assertFalse(check);
         assertTrue(errorThrown);
-        assertEquals("Card is expired",errorMessage);
+        assertEquals("Expired card",errorMessage);
 
     }
 
-
-
-
     @Test
-    public void testInvalid_OfflineVerification_MissingInformation() {
+    public void testInvalid_OfflineVerification_MissingInformation_Name() {
         boolean errorThrown = false;
         boolean check = false;
         String errorMessage = "";
         try{
-            ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "");
-            PaymentProcessor paymentProcessor = new PaymentProcessor(logs);
+            ccInfo = new CCInfo("", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "123");
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
             check = paymentProcessor.OfflineVerification(ccInfo);
 
         }catch (Exception  e){
@@ -144,7 +138,48 @@ public class OfflineVerificationTests {
         }
         assertFalse(check);
         assertTrue(errorThrown);
-        assertEquals("Missing card Information",errorMessage);
+        assertEquals("Missing Name",errorMessage);
+
+    }
+
+
+    @Test
+    public void testInvalid_OfflineVerification_MissingInformation_Address() {
+        boolean errorThrown = false;
+        boolean check = false;
+        String errorMessage = "";
+        try{
+            ccInfo = new CCInfo("Chris", "", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "123");
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
+            check = paymentProcessor.OfflineVerification(ccInfo);
+
+        }catch (Exception  e){
+            errorThrown = true;
+            errorMessage = e.getMessage();
+        }
+        assertFalse(check);
+        assertTrue(errorThrown);
+        assertEquals("Missing Address",errorMessage);
+
+    }
+
+    @Test
+    public void testInvalid_OfflineVerification_MissingInformation_CVV() {
+        boolean errorThrown = false;
+        boolean check = false;
+        String errorMessage = "";
+        try{
+            ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "");
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
+            check = paymentProcessor.OfflineVerification(ccInfo);
+
+        }catch (Exception  e){
+            errorThrown = true;
+            errorMessage = e.getMessage();
+        }
+        assertFalse(check);
+        assertTrue(errorThrown);
+        assertEquals("Invalid CVV",errorMessage);
 
     }
 }

@@ -29,10 +29,6 @@ public class PaymentProcessor {
         this.logs = logs;
     }
 
-    public PaymentProcessor(List<String> logs) {
-        this.logs = logs;
-    }
-
     public PaymentProcessor() {
     }
 
@@ -80,7 +76,7 @@ public class PaymentProcessor {
                         else  throw  new UserError("Invalid CVV");
                     else throw new UserError("Missing Address");
                 else throw new UserError("Missing Name");
-            } else throw new UserError("Card is expired");
+            } else throw new UserError("Expired card");
         } else throw new UserError("Invalid Prefix of card");
     }
 
@@ -159,8 +155,7 @@ public class PaymentProcessor {
             long bankAction = -1;
             int actionResult = 2;
             if (OfflineVerification(ccInfo)) {
-                //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
-                // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
+
                 if (state.toLowerCase().contains(States.CAPTURE.toString().toLowerCase())) {
 
                     bankAction = bank.capture(transactionID);
@@ -234,7 +229,6 @@ public class PaymentProcessor {
         }
     }
 
-
     private void setTransactionToInvalid(Transaction currentTransaction) {
         if (currentTransaction.getId() != -1) {
             currentTransaction.setState("invalid");
@@ -244,7 +238,8 @@ public class PaymentProcessor {
     }
 
     private int Authorise(long transactionID, Transaction currentTransaction) throws Exception {
-
+        //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
+        // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (transactionID > 0) {
             currentTransaction.setId(transactionID);
             currentTransaction.setState(States.AUTHORISE.toString());
@@ -265,17 +260,21 @@ public class PaymentProcessor {
         Transaction currentTransaction = transactionDB.getTransaction(transactionID);
 
         Calendar presentDate = getPresentDate();
-        Calendar possibleWeek = currentTransaction.getDate();
-        possibleWeek.add(Calendar.WEEK_OF_YEAR, +1);
+        Calendar transactionWeek = currentTransaction.getDate();
+        transactionWeek.add(Calendar.WEEK_OF_YEAR, +1);
 
-
-        if (bankAction == 0 && possibleWeek.compareTo(presentDate) >= 0) {
+        //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
+        // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
+        if (bankAction == 0 && transactionWeek.compareTo(presentDate) >= 0) {
 
             if (currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase())) {
                 currentTransaction.setState(States.CAPTURE.toString());
                 transactionDB.saveTransaction(currentTransaction);
                 return 0;
-            } else {
+            } else    if (currentTransaction.getState().contains(States.CAPTURE.toString().toLowerCase()) ||currentTransaction.getState().contains(States.REFUND.toString().toLowerCase()) )   {
+
+                throw new UserError("Transaction already processed");
+            } else{
                 throw new UserError("Transaction does not exist");
             }
 
@@ -288,7 +287,7 @@ public class PaymentProcessor {
 
             throw new UserError("Transaction has already been captured");
 
-        } else if (bankAction == -3 || possibleWeek.compareTo(currentTransaction.getDate()) < 0) {
+        } else if (bankAction == -3 || transactionWeek.compareTo(presentDate) < 0) {
 
             currentTransaction.setState(States.VOID.toString());
             transactionDB.saveTransaction(currentTransaction);
@@ -305,14 +304,20 @@ public class PaymentProcessor {
         Calendar presentDate = getPresentDate();
         Calendar monthRefund = currentTransaction.getDate();
         monthRefund.add(Calendar.MONTH, +1);
-
+        //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
+        // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (bankAction == 0 && monthRefund.compareTo(presentDate) >= 0) {
 
             if (currentTransaction.getState().contains(States.CAPTURE.toString().toLowerCase()) && currentTransaction.getAmount() == amount) {
                 currentTransaction.setState(States.REFUND.toString());
                 transactionDB.saveTransaction(currentTransaction);
                 return 0;
-            } else throw new UserError("Refund is greater than amount captured");
+            } else if (currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase()) ) {
+                throw new UserError("Refund is not captured");
+            } else if (currentTransaction.getState().contains(States.REFUND.toString().toLowerCase()) ) {
+                throw new UserError("Transaction already refunded");
+            } else
+                throw new UserError("Refund is greater than amount captured");
 
         } else if (bankAction == -1) {
 
