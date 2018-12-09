@@ -73,9 +73,13 @@ public class PaymentProcessor {
         VerifyOffline verifyOffline = new VerifyOffline();
         if (verifyOffline.verifyPrefixAndCardType(ccInfo.getCardNumber(), ccInfo.getCardType())) {
             if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
-                if (verifyOffline.verifyInfoPresent(ccInfo))
-                    return 0;
-                else throw new UserError("Missing card Information");
+                if (verifyOffline.verifyName(ccInfo.getCustomerName()))
+                    if(verifyOffline.verifyAddress(ccInfo.getCustomerAddress()))
+                        if(verifyOffline.verifyCVV(ccInfo.getCardCVV(),ccInfo.getCardType()))
+                            return 0;
+                        else  throw  new UserError("Invalid CVV");
+                    else throw new UserError("Missing Address");
+                else throw new UserError("Missing Name");
             } else throw new UserError("Card is expired");
         } else throw new UserError("Invalid Prefix of card");
     }

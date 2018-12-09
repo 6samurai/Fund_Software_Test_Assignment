@@ -58,7 +58,33 @@ public class VerifyOffline {
         }
     }
 
-    public boolean verifyInfoPresent(CCInfo ccInfo){
+    public boolean verifyName(String name){
+        if(name.length()>0)
+            return  true;
+        return  false;
+    }
+
+    public boolean verifyAddress(String address){
+        if (address.length()>0)
+            return true;
+        return  false;
+    }
+
+    public boolean verifyCVV(String cvv, String cardType){
+        if( cvv.matches("[0-9]+") )
+            if((cardType.contains(CardTypes.AMERICAN_EXPRESS.toString().toLowerCase()) && cvv.length()==4 )||
+                    (cvv.length()==3 &&
+                            (cardType.contains(CardTypes.VISA.toString().toLowerCase()) ||
+                                    cardType.contains(CardTypes.MASTERCARD.toString().toLowerCase())
+                            )
+                    )
+            )
+                return  true;
+
+        return false;
+    }
+
+   /* public boolean verifyInfoPresent(CCInfo ccInfo){
 
         String CVV = ccInfo.getCardCVV();
         String cardType = ccInfo.getCardType();
@@ -74,7 +100,7 @@ public class VerifyOffline {
                 return  true;
 
         return false;
-    }
+    }*/
 
 }
 

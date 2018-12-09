@@ -70,4 +70,13 @@ public class LuhnTests {
         assertFalse(check);
     }
 
+    @Test
+    public void testVerifyOperation_LuhnCheck_Invalid_NoDigits() {
+        ccInfo = new CCInfo("Chris", "222,Test", "American Express", "assererwer!!@#!431", "11/2020", "1234");
+        PaymentProcessor paymentProcessor = new PaymentProcessor();
+        boolean check = paymentProcessor.verifyLuhn(ccInfo.getCardNumber());
+
+        assertFalse(check);
+    }
+
 }
