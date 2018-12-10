@@ -72,7 +72,7 @@ public class CaptureTests {
     }
 
     @Test
-    public void testInvalidCaptureProcess_TransactionDoesNotExist() {
+    public void testInvalidCaptureProcess_TransactionDoesNotExistFromBank() {
 
         //setup
         long amount = 1000L;
@@ -97,7 +97,7 @@ public class CaptureTests {
     }
 
     @Test
-    public void testInvalidCaptureProcess_TransactionAlreadyCaptured() {
+    public void testInvalidCaptureProcess_TransactionAlreadyCapturedFromBank() {
 
         //setup
 
@@ -148,7 +148,7 @@ public class CaptureTests {
 
 
     @Test
-    public void testInvalidCaptureProcess_UnknownError() {
+    public void testInvalidCaptureProcess_UnknownErrorFromBank() {
 
         //setup
         long amount = 1000L;
@@ -173,7 +173,7 @@ public class CaptureTests {
     }
 
     @Test
-    public void testInvalidCaptureProcess_BankReturnsValid_ExpiredCard() {
+    public void testInvalidCaptureProcess_BankReturnsValid_ExpiredCardFromDB() {
 
         //setup
         long amount = 1000L;

@@ -151,10 +151,11 @@ public class PaymentProcessor {
 
         Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "", presentDate);
         try {
-
+            VerifyOffline verifyOffline = new VerifyOffline();
             long bankAction = -1;
             int actionResult = 2;
-            if (OfflineVerification(ccInfo)) {
+            //to verify that that card is not expired
+            if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
 
                 if (state.toLowerCase().contains(States.CAPTURE.toString().toLowerCase())) {
 
@@ -168,9 +169,8 @@ public class PaymentProcessor {
 
                 } else {
                     throw new UserError("Invalid operation selected");
-
                 }
-            }
+            } else throw new UserError("Expired card");
             return actionResult;
 
         } catch (UserError e) {

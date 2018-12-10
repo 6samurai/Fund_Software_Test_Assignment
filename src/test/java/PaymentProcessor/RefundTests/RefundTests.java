@@ -66,7 +66,7 @@ public class RefundTests {
     }
 
     @Test
-    public void testInvalidRefundProcess_TransactionDoesNotExist() {
+    public void testInvalidRefundProcess_TransactionDoesNotExistFromBank() {
 
         //setup
         long amount = 1000L;
@@ -90,14 +90,14 @@ public class RefundTests {
         assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
     }
     @Test
-    public void testInvalidRefundProcess_TransactionHasNotBeenCaptured() {
+    public void testInvalidRefundProcess_TransactionHasNotBeenCapturedFromBank() {
 
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
         transactionDB.saveTransaction(auth_Transaction);
 
         when(bank.refund(transactionID,amount)).thenReturn(-2);
@@ -116,14 +116,14 @@ public class RefundTests {
     }
 
     @Test
-    public void testInvalidRefundProcess_TransactionHasAlreadyBeenRefunded() {
+    public void testInvalidRefundProcess_TransactionHasAlreadyBeenRefundedFromBank() {
 
         //setup
         long amount = 1000L;
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.CAPTURE.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction = new Transaction(transactionID,ccInfo,amount,TestBankOperation.REFUND.toString().toLowerCase(), Calendar.getInstance());
         transactionDB.saveTransaction(auth_Transaction);
 
         when(bank.refund(transactionID,amount)).thenReturn(-3);
@@ -142,7 +142,7 @@ public class RefundTests {
     }
 
     @Test
-    public void testInvalidRefundProcess_RefundAmountGreaterThanCapturedAmount() {
+    public void testInvalidRefundProcess_RefundAmountGreaterThanCapturedAmountFromBank() {
 
         //setup
         long amount = 1000L;
@@ -167,7 +167,7 @@ public class RefundTests {
 
     }
     @Test
-    public void testInvalidRefundProcess_UnknownError() {
+    public void testInvalidRefundProcess_UnknownErrorFromBank() {
 
         //setup
         long amount = 1000L;
@@ -193,7 +193,7 @@ public class RefundTests {
 
 
     @Test
-    public void testInvalidRefundProcess_BankReturnsValid_CreditCardExpired() {
+    public void testInvalidRefundProcess_BankReturnsValid_CreditCardExpiredInDB() {
         ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2000", "1234");
 
         //setup

@@ -37,7 +37,7 @@ public class PaymentProcessorTest {
     }
 
     @Test
-    public void testMultiple_CaptureTransactions() {
+    public void testMultiple_ValidCaptureTransactions_DifferentAccounts() {
         //setup
 
         CCInfo ccInfo_1 = new CCInfo("Chris", "222,Test", CardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
@@ -80,7 +80,7 @@ public class PaymentProcessorTest {
 
     //two transactions have errors in the CCinfo(ccInfo_1 missing card number - ccInfo_2 missing card number) and one transaction results an invalid transaction from the bank
     @Test
-    public void testMultiple_ErrorTransactions() {
+    public void testMultiple_ErrorTransactions_DifferentAccounts() {
         //setup
 
         CCInfo ccInfo_1 = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "", "11/2020", "1234");
@@ -93,28 +93,22 @@ public class PaymentProcessorTest {
         long transactionID_2 = 2L;
         long transactionID_3 = 3L;
 
-        Transaction auth_Transaction_1 = new Transaction(transactionID_1,ccInfo_1,amount_1,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(transactionID_2,ccInfo_2,amount_2,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
         Transaction auth_Transaction_3 = new Transaction(transactionID_3,ccInfo_3,amount_3,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
 
-        transactionDB.saveTransaction(auth_Transaction_1);
-        transactionDB.saveTransaction(auth_Transaction_2);
         transactionDB.saveTransaction(auth_Transaction_3);
 
         bank = mock(BankProxy.class);
-
-        when(bank.capture(transactionID_1)).thenReturn(0);
-        when(bank.capture(transactionID_2)).thenReturn(0);
+        when(bank.auth(ccInfo_1, amount_1)).thenReturn(0L);
+        when(bank.auth(ccInfo_2, amount_2)).thenReturn(0L);
         when(bank.capture(transactionID_3)).thenReturn(-1);
-
 
 
         //exercise
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-        int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1, TestBankOperation.CAPTURE.toString(),transactionID_1);
+        int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1, TestBankOperation.AUTHORISE.toString());
 
         paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-        int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2, TestBankOperation.CAPTURE.toString(),transactionID_2);
+        int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2, TestBankOperation.AUTHORISE.toString());
 
         paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_3, amount_3, TestBankOperation.CAPTURE.toString(),transactionID_3);
@@ -123,14 +117,11 @@ public class PaymentProcessorTest {
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(3,logs.size());
-        assertEquals(3,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
         assertTrue(logs.get(0).contains("Invalid Card Number"));
         assertTrue(logs.get(1).contains("Invalid Prefix of card"));
         assertTrue(logs.get(2).contains("Transaction does not exist"));
-        assertEquals("invalid",transactionDB.getTransaction(transactionID_1).getState());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID_2).getState());
         assertEquals("invalid",transactionDB.getTransaction(transactionID_3).getState());
-
 
     }
 
@@ -139,7 +130,7 @@ public class PaymentProcessorTest {
         //setup
 
         CCInfo ccInfo_1 = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
-        CCInfo ccInfo_2 = new CCInfo("Joe", "333,Test", TestCardTypes.MASTERCARD.toString(), "4111111111111111", "11/2021", "432");
+        CCInfo ccInfo_2 = new CCInfo("Joe", "333,Test", TestCardTypes.MASTERCARD.toString(), "5555555555554444" , "11/2000", "432");
         CCInfo ccInfo_3 = new CCInfo("Mark", "444,Test", TestCardTypes.MASTERCARD.toString(), "5105105105105100", "11/2022", "243");
         long amount_1 = 1000L;
         long amount_2 = 3000L;
@@ -167,8 +158,9 @@ public class PaymentProcessorTest {
         //valid operation
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,  logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount_1, TestBankOperation.CAPTURE.toString(),transactionID_1);
-        //invalid prefix of card
+        //expired card
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_2, amount_2, TestBankOperation.CAPTURE.toString(),transactionID_2);
+
         int result_operation_3 = paymentProcessor.processPayment(ccInfo_3, amount_3, TestBankOperation.CAPTURE.toString(),transactionID_3);
         //verify
 
@@ -177,7 +169,7 @@ public class PaymentProcessorTest {
         assertEquals(1, result_operation_2);
         assertEquals(1, result_operation_3);
         assertEquals(2,logs.size());
-        assertTrue(logs.get(0).contains("Invalid Prefix of card"));
+        assertTrue(logs.get(0).contains("Expired card"));
         assertTrue(logs.get(1).contains("Transaction does not exist"));
 
         assertEquals(3,transactionDB.countTransactions());
@@ -245,11 +237,10 @@ public class PaymentProcessorTest {
         long transactionID = 1L;
 
         bank = mock(BankProxy.class);
-        when(bank.auth(ccInfo_1, amount)).thenReturn(transactionID);
-        when(bank.capture(transactionID)).thenReturn(0);
 
-        when(bank.auth(ccInfo_1, amount)).thenReturn(transactionID);
+        when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID,amount)).thenReturn(0);
+
         Transaction auth_Transaction_1 = new Transaction(transactionID,ccInfo_1,amount,TestBankOperation.AUTHORISE.toString().toLowerCase(), Calendar.getInstance());
         transactionDB.saveTransaction(auth_Transaction_1);
 
@@ -257,7 +248,6 @@ public class PaymentProcessorTest {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
         int result_operation_1 = paymentProcessor.processPayment(ccInfo_1, amount, TestBankOperation.CAPTURE.toString(),transactionID);
         int result_operation_2 = paymentProcessor.processPayment(ccInfo_1, amount, TestBankOperation.REFUND.toString(),transactionID);
-
 
         //verify
         assertEquals(0, result_operation_1);
@@ -335,6 +325,5 @@ public class PaymentProcessorTest {
     }
 
 
-    // CREATE A METHOD WHERE THE PREVIOUS TRANSACTION IS INCORRECTLY CALLED FROM THE BANK AND THE LOCAL TRANSACTION DATABASE IS REFERENCED
 
 }
