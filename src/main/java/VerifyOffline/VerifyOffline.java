@@ -5,6 +5,7 @@ import CardInfo.enums.CardTypes;
 
 import javax.smartcardio.Card;
 import java.time.LocalDate;
+import java.util.Calendar;
 
 public class VerifyOffline {
 
@@ -37,25 +38,27 @@ public class VerifyOffline {
         return false;
     }
 
-   public boolean verifyExpiryDate(String expiryDate){
-        try {
+    public boolean verifyExpiryDate(String expiryDate){
 
-            LocalDate currentDate = LocalDate.now();
+        Calendar presentDate = Calendar.getInstance();
 
-            int month = Integer.parseInt(expiryDate.substring(0,2));
-            int year = Integer.parseInt(expiryDate.substring(3,7));
-            LocalDate expiryDate_Date = LocalDate.of(year,month,1);
+        presentDate.set(Calendar.MINUTE, 0);
+        presentDate.set(Calendar.SECOND, 0);
+        presentDate.set(Calendar.HOUR_OF_DAY, 0);
 
-            if(expiryDate_Date.getYear()>currentDate.getYear())
-                return  true;
-            else if (expiryDate_Date.getYear()==currentDate.getYear() &&
-                    expiryDate_Date.getMonth().getValue()>= currentDate.getMonth().getValue())
-                return true;
+        int month = Integer.parseInt(expiryDate.substring(0,2));
+        int year = Integer.parseInt(expiryDate.substring(3,7));
+        Calendar expiryDateCal = Calendar.getInstance();
+        expiryDateCal.set(Calendar.MONTH,month);
+        expiryDateCal.set(Calendar.YEAR,year);
 
-            return false;
-        }catch ( Exception e){
-            return  false;
+        if(expiryDateCal.compareTo(presentDate) >= 0){
+
+            return  true;
         }
+        return  false;
+
+
     }
 
     public boolean verifyName(String name){
@@ -84,23 +87,6 @@ public class VerifyOffline {
         return false;
     }
 
-   /* public boolean verifyInfoPresent(CCInfo ccInfo){
-
-        String CVV = ccInfo.getCardCVV();
-        String cardType = ccInfo.getCardType();
-
-        if(ccInfo.getCustomerAddress().length()>0 && ccInfo.getCustomerName().length()>0 && CVV.matches("[0-9]+") )
-            if((cardType.contains(CardTypes.AMERICAN_EXPRESS.toString().toLowerCase()) && CVV.length()==4 )||
-                    (CVV.length()==3 &&
-                            (cardType.contains(CardTypes.VISA.toString().toLowerCase()) ||
-                             cardType.contains(CardTypes.MASTERCARD.toString().toLowerCase())
-                            )
-                    )
-                )
-                return  true;
-
-        return false;
-    }*/
 
 }
 

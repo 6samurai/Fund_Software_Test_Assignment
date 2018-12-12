@@ -182,4 +182,26 @@ public class OfflineVerificationTests {
         assertEquals("Invalid CVV",errorMessage);
 
     }
+
+    @Test
+    public void testInvalid_FailedLuhnTest() {
+        boolean errorThrown = false;
+        boolean check = false;
+        String errorMessage = "";
+        try{
+            ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398432", "11/2020", "1234");
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
+            check = paymentProcessor.OfflineVerification(ccInfo);
+            assertEquals(0,logs.size());
+
+        }catch (Exception  e){
+            errorThrown = true;
+            errorMessage = e.getMessage();
+        }
+
+        assertFalse(check);
+        assertTrue(errorThrown);
+        assertEquals("Invalid Card Number",errorMessage);
+
+    }
 }

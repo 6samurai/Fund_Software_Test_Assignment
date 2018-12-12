@@ -269,7 +269,4 @@ public class VerifyOfflineTests {
 
         assertFalse(check);
     }
-
-
-
 }

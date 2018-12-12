@@ -1,11 +1,11 @@
 package PaymentProcessor.enums;
 
 public enum TestBankOperation {
-    CAPTURE,
+    CAPTURED,
     VOID,
     INVALID,
-    AUTHORISE,
-    REFUND,
+    AUTHORISED,
+    REFUNDED,
     NONE
 
 }

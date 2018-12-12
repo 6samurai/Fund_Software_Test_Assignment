@@ -33,7 +33,7 @@ public class PaymentProcessor {
     }
 
     public boolean verifyLuhn(String cardNumber) {
-        try {
+
             if (cardNumber.length() == 0)
                 return false;
 
@@ -60,9 +60,7 @@ public class PaymentProcessor {
 
             return false;
 
-        } catch (Exception e) {
-            return false;
-        }
+
     }
 
     public int verifyOffline(CCInfo ccInfo) throws Exception {
@@ -70,10 +68,10 @@ public class PaymentProcessor {
         if (verifyOffline.verifyPrefixAndCardType(ccInfo.getCardNumber(), ccInfo.getCardType())) {
             if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
                 if (verifyOffline.verifyName(ccInfo.getCustomerName()))
-                    if(verifyOffline.verifyAddress(ccInfo.getCustomerAddress()))
-                        if(verifyOffline.verifyCVV(ccInfo.getCardCVV(),ccInfo.getCardType()))
+                    if (verifyOffline.verifyAddress(ccInfo.getCustomerAddress()))
+                        if (verifyOffline.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType()))
                             return 0;
-                        else  throw  new UserError("Invalid CVV");
+                        else throw new UserError("Invalid CVV");
                     else throw new UserError("Missing Address");
                 else throw new UserError("Missing Name");
             } else throw new UserError("Expired card");
@@ -88,9 +86,9 @@ public class PaymentProcessor {
                 return true;
             }
 
-        } else throw new UserError("Invalid Card Number");
+        }
+        throw new UserError("Invalid Card Number");
 
-        return false;
     }
 
  /*   public int processPayment(CCInfo ccInfo, long amount) {
@@ -105,19 +103,19 @@ public class PaymentProcessor {
                 long bankAction = bank.auth(ccInfo, amount);
                 int actionResult = Authorise(bankAction, currentTransaction);
 
-                if (operation == States.AUTHORISE) {
+                if (operation == States.AUTHORISED) {
                     return actionResult;
                 }
 
                 //since operation is not authorise - the resulting actions are either cpature or refund
-                if (actionResult == 0 && currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase())) {
+                if (actionResult == 0 && currentTransaction.getState().contains(States.AUTHORISED.toString().toLowerCase())) {
                     bankAction = bank.capture(currentTransaction.getId());
 
                     actionResult = Capture(bankAction, currentTransaction);
 
-                    if (operation == States.CAPTURE) {
+                    if (operation == States.CAPTURED) {
                         return actionResult;
-                    } else if (operation == States.REFUND && actionResult == 0) {
+                    } else if (operation == States.REFUNDED && actionResult == 0) {
 
                         bankAction = bank.refund(currentTransaction.getId(), amount);
                         return Refund(bankAction, currentTransaction);
@@ -147,22 +145,20 @@ public class PaymentProcessor {
 
     public int processPayment(CCInfo ccInfo, long amount, String state, long transactionID) {
 
-        Calendar presentDate = getPresentDate();
-
-        Transaction currentTransaction = new Transaction(transactionID, ccInfo, amount, "", presentDate);
+        Transaction currentTransaction = new Transaction(transactionDB.countTransactions(), transactionID, ccInfo, amount, "", getPresentDate());
         try {
             VerifyOffline verifyOffline = new VerifyOffline();
             long bankAction = -1;
             int actionResult = 2;
             //to verify that that card is not expired
-            if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
+            if (verifyOffline(ccInfo) == 0) {
 
-                if (state.toLowerCase().contains(States.CAPTURE.toString().toLowerCase())) {
+                if (state.toLowerCase().contains(States.CAPTURED.toString().toLowerCase())) {
 
                     bankAction = bank.capture(transactionID);
                     actionResult = Capture(bankAction, transactionID);
 
-                } else if (state.toLowerCase().contains(States.REFUND.toString().toLowerCase())) {
+                } else if (state.toLowerCase().contains(States.REFUNDED.toString().toLowerCase())) {
 
                     bankAction = bank.refund(transactionID, amount);
                     actionResult = Refund(bankAction, amount, transactionID);
@@ -170,7 +166,7 @@ public class PaymentProcessor {
                 } else {
                     throw new UserError("Invalid operation selected");
                 }
-            } else throw new UserError("Expired card");
+            }
             return actionResult;
 
         } catch (UserError e) {
@@ -192,22 +188,19 @@ public class PaymentProcessor {
 
     public int processPayment(CCInfo ccInfo, long amount, String state) {
 
-        Calendar presentDate = getPresentDate();
-
-        Transaction currentTransaction = new Transaction(-1L, ccInfo, amount, "", presentDate);
+        Transaction currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
         try {
 
             long bankAction = -1;
             int actionResult = 2;
             if (OfflineVerification(ccInfo)) {
 
-                if (state.toLowerCase().contains(States.AUTHORISE.toString().toLowerCase())) {
+                if (state.toLowerCase().contains(States.AUTHORISED.toString().toLowerCase())) {
                     bankAction = bank.auth(ccInfo, amount);
                     actionResult = Authorise(bankAction, currentTransaction);
 
                 } else {
                     throw new UserError("Invalid operation selected");
-
                 }
             }
             return actionResult;
@@ -232,6 +225,9 @@ public class PaymentProcessor {
     private void setTransactionToInvalid(Transaction currentTransaction) {
         if (currentTransaction.getId() != -1) {
             currentTransaction.setState("invalid");
+
+            currentTransaction.setId(transactionDB.countTransactions());
+
             transactionDB.saveTransaction(currentTransaction);
         }
 
@@ -241,8 +237,9 @@ public class PaymentProcessor {
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (transactionID > 0) {
-            currentTransaction.setId(transactionID);
-            currentTransaction.setState(States.AUTHORISE.toString());
+            currentTransaction.setId(transactionDB.countTransactions());
+            currentTransaction.setState(States.AUTHORISED.toString());
+            currentTransaction.setTransactionId(transactionID);
             transactionDB.saveTransaction(currentTransaction);
             return 0;
         } else if (transactionID == -1) {
@@ -267,14 +264,18 @@ public class PaymentProcessor {
         // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (bankAction == 0 && transactionWeek.compareTo(presentDate) >= 0) {
 
-            if (currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase())) {
-                currentTransaction.setState(States.CAPTURE.toString());
-                transactionDB.saveTransaction(currentTransaction);
+            if (currentTransaction.getState().contains(States.AUTHORISED.toString().toLowerCase())) {
+
+
+                Transaction newTran = new Transaction(transactionDB.countTransactions(), currentTransaction.getTransactionId(), currentTransaction.getCcInfo()
+                        , currentTransaction.getAmount(), States.CAPTURED.toString(), presentDate);
+                transactionDB.saveTransaction(newTran);
+
                 return 0;
-            } else    if (currentTransaction.getState().contains(States.CAPTURE.toString().toLowerCase()) ||currentTransaction.getState().contains(States.REFUND.toString().toLowerCase()) )   {
+            } else if (currentTransaction.getState().contains(States.CAPTURED.toString().toLowerCase()) || currentTransaction.getState().contains(States.REFUNDED.toString().toLowerCase())) {
 
                 throw new UserError("Transaction already processed");
-            } else{
+            } else {
                 throw new UserError("Transaction does not exist");
             }
 
@@ -289,9 +290,11 @@ public class PaymentProcessor {
 
         } else if (bankAction == -3 || transactionWeek.compareTo(presentDate) < 0) {
 
-            currentTransaction.setState(States.VOID.toString());
-            transactionDB.saveTransaction(currentTransaction);
-            return 0;
+
+            Transaction newTran = new Transaction(transactionDB.countTransactions(), currentTransaction.getTransactionId(), currentTransaction.getCcInfo()
+                    , currentTransaction.getAmount(), States.VOID.toString(), presentDate);
+            transactionDB.saveTransaction(newTran);
+            return 1;
         } else if (bankAction == -4) {
             throw new UnknownError();
 
@@ -308,13 +311,14 @@ public class PaymentProcessor {
         // Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (bankAction == 0 && monthRefund.compareTo(presentDate) >= 0) {
 
-            if (currentTransaction.getState().contains(States.CAPTURE.toString().toLowerCase()) && currentTransaction.getAmount() == amount) {
-                currentTransaction.setState(States.REFUND.toString());
-                transactionDB.saveTransaction(currentTransaction);
+            if (currentTransaction.getState().contains(States.CAPTURED.toString().toLowerCase()) && currentTransaction.getAmount() == amount) {
+                Transaction newTran = new Transaction(transactionDB.countTransactions(), currentTransaction.getTransactionId(), currentTransaction.getCcInfo()
+                        , currentTransaction.getAmount(), States.REFUNDED.toString(), presentDate);
+                transactionDB.saveTransaction(newTran);
                 return 0;
-            } else if (currentTransaction.getState().contains(States.AUTHORISE.toString().toLowerCase()) ) {
+            } else if (currentTransaction.getState().contains(States.AUTHORISED.toString().toLowerCase())) {
                 throw new UserError("Refund is not captured");
-            } else if (currentTransaction.getState().contains(States.REFUND.toString().toLowerCase()) ) {
+            } else if (currentTransaction.getState().contains(States.REFUNDED.toString().toLowerCase())) {
                 throw new UserError("Transaction already refunded");
             } else
                 throw new UserError("Refund is greater than amount captured");

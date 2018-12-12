@@ -1,10 +1,10 @@
 package TransactionDatabase.enums;
 
 public enum States {
-    AUTHORISE,
-    CAPTURE,
+    AUTHORISED,
+    CAPTURED,
     INVALID,
-    REFUND,
+    REFUNDED,
     VOID,
 
 }

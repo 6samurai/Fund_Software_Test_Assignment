@@ -55,12 +55,12 @@ public class AuthorisationTests {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
 
         //verify
         assertEquals(0, result);
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("authorise",transactionDB.getTransaction(transactionID).getState());
+        assertEquals("authorised",transactionDB.getTransaction(transactionID).getState());
     }
 
 
@@ -75,13 +75,14 @@ public class AuthorisationTests {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
 
         //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Credit card details are invalid"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
     }
 
     @Test
@@ -95,13 +96,14 @@ public class AuthorisationTests {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
 
         //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Insufficient funds on credit card"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
     }
 
     @Test
@@ -115,13 +117,35 @@ public class AuthorisationTests {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
 
         //verify
         assertEquals(2, result);
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("An unknown error has occurred"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+    }
+
+    @Test
+    public void testInvalidAuthorisationRequest_ReturnAnUnregisteredValueFromBank() {
+
+        //setup
+        long amount = 1000L;
+        transactionID =  10L;
+        bank = mock(BankProxy.class);
+        when(bank.auth(ccInfo, amount)).thenReturn(-3L);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+        //exercise
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
+
+        //verify
+        assertEquals(2, result);
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("An unknown error has occurred"));
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
     }
 
     @Test
@@ -136,12 +160,61 @@ public class AuthorisationTests {
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISE.toString());
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
 
         //verify
         assertEquals(1, result);
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Expired card"));
-        assertEquals(0,transactionDB.countTransactions());
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
     }
+
+
+
+    @Test
+    public void testValidAuthorisationRequest_ReturnNegativeTransactionID() {
+
+        //setup
+        long amount = 1000L;
+        bank = mock(BankProxy.class);
+        transactionID =  -10L;
+        when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
+
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+        //exercise
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
+
+        //verify
+        assertEquals(2, result);
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("An unknown error has occurred"));
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+
+    }
+
+    @Test
+    public void testInvalidAuthorisationRequest_NoBank() {
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
+
+        //setup
+        long amount = 1000L;
+        transactionID =  10L;
+        bank = null;
+   //     when(bank.auth(ccInfo, amount)).thenReturn(0L);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+        //exercise
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.AUTHORISED.toString());
+
+        //verify
+        assertEquals(2, result);
+        assertEquals(1,logs.size());
+        assertTrue(logs.get(0).contains("An error has occurred"));
+        assertEquals(1,transactionDB.countTransactions());
+        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+    }
+
 }
