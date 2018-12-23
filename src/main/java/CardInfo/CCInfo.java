@@ -10,8 +10,8 @@ public class CCInfo {
     private String cardExpiryDate;
     private String cardCVV;
 
-
-    public CCInfo(String customerName, String customerAddress, String cardType, String cardNumber, String cardExpiryDate, String cardCVV){
+    //ccinfo constructor
+    public CCInfo(String customerName, String customerAddress, String cardType, String cardNumber, String cardExpiryDate, String cardCVV) {
 
         setCustomerName(customerName);
         setCustomerAddress(customerAddress);
@@ -20,62 +20,56 @@ public class CCInfo {
         setCardExpiryDate(cardExpiryDate);
         setCardCVV(cardCVV);
     }
-
-    public String getCustomerName()
-    {
+    //setters and getters for ccinfo
+    public String getCustomerName() {
         return this.customerName;
     }
-    public void setCustomerName(String value)
-    {
+
+    public void setCustomerName(String value) {
         this.customerName = value;
     }
 
-    public String getCustomerAddress()
-    {
+    public String getCustomerAddress() {
         return this.customerAddress;
     }
-    public void setCustomerAddress(String value)
-    {
+
+    public void setCustomerAddress(String value) {
         this.customerAddress = value;
     }
 
-    public String getCardType()
-    {
+    public String getCardType() {
         return this.cardType;
     }
-    public void setCardType(String value)
-    {
-        for (CardTypes val: CardTypes.values()) {
+    //Verifies that inputted string is equal to a card type enum value
+    public void setCardType(String value) {
+        for (CardTypes val : CardTypes.values()) {
 
-            if(val.toString().toLowerCase().contains( value.toLowerCase()))
+            if (val.toString().toLowerCase().contains(value.toLowerCase()))
                 this.cardType = value.toLowerCase();
         }
     }
 
-    public String getCardNumber()
-    {
+    public String getCardNumber() {
         return this.cardNumber;
     }
-    public void setCardNumber(String value)
-    {
+
+    public void setCardNumber(String value) {
         this.cardNumber = value;
     }
 
-    public String getCardExpiryDate()
-    {
+    public String getCardExpiryDate() {
         return this.cardExpiryDate;
     }
-    public void setCardExpiryDate(String value)
-    {
+
+    public void setCardExpiryDate(String value) {
         this.cardExpiryDate = value;
     }
 
-    public String getCardCVV()
-    {
+    public String getCardCVV() {
         return this.cardCVV;
     }
-    public void setCardCVV(String value)
-    {
+
+    public void setCardCVV(String value) {
         this.cardCVV = value;
     }
 

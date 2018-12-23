@@ -22,7 +22,7 @@ public class Transaction {
         setDate(date);
 
     }
-
+    //Getters and setters for transaction
     public Long getTransactionId() {
         return this.transactionId;
     }
@@ -50,7 +50,7 @@ public class Transaction {
     public String getState() {
         return this.state;
     }
-
+    //Verifies that inputted string is equal to a states enum value
     public void setState(String value) {
         boolean valid = false;
         value = value.toLowerCase();
@@ -77,7 +77,7 @@ public class Transaction {
     public Calendar getDate() {
         return this.date;
     }
-
+    //set the time section of Calendar to 0 so that only the Date is considered
     public void setDate(Calendar value) {
         value.set(Calendar.HOUR_OF_DAY, 0);
         value.set(Calendar.MINUTE, 0);

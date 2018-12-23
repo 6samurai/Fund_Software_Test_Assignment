@@ -5,8 +5,8 @@ import CardInfo.CCInfo;
 import PaymentProcessor.PaymentProcessor;
 import PaymentProcessor.enums.TestBankOperation;
 import PaymentProcessor.enums.TestCardTypes;
-import TransactionDatabase.TransactionDatabase;
 import TransactionDatabase.Transaction;
+import TransactionDatabase.TransactionDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +27,7 @@ public class RefundTests {
     BankProxy bank;
     List<String> logs;
     long transactionID;
+
     @Before
     public void setup() {
         transactionDB = new TransactionDatabase();
@@ -37,7 +38,7 @@ public class RefundTests {
     @After
     public void teardown() {
         transactionDB = null;
-        ccInfo =null;
+        ccInfo = null;
         logs.clear();
         bank = null;
     }
@@ -58,21 +59,21 @@ public class RefundTests {
         //setup
         long amount = 1000L;
         transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
-        when(bank.refund(transactionID,amount)).thenReturn(0);
+        when(bank.refund(transactionID, amount)).thenReturn(0);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(0, result);
-        assertEquals(0,logs.size());
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("refunded",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(0, logs.size());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("refunded", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
     @Test
@@ -83,22 +84,23 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(-1);
+        when(bank.refund(transactionID, amount)).thenReturn(-1);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Transaction does not exist"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
+
     @Test
     public void testInvalidRefundProcess_TransactionHasNotBeenCapturedFromBank() {
 
@@ -107,21 +109,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.AUTHORISED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(-2);
+        when(bank.refund(transactionID, amount)).thenReturn(-2);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Transaction has not been captured"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
 
     }
 
@@ -133,21 +135,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.REFUNDED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.REFUNDED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(-3);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,logs);
+        when(bank.refund(transactionID, amount)).thenReturn(-3);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-         int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Transaction has already been refunded"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
 
     }
 
@@ -159,23 +161,24 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB,  logs);
+        when(bank.refund(transactionID, amount)).thenReturn(-4);
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Refund is greater than amount captured"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
 
     }
+
     @Test
     public void testInvalidRefundProcess_UnknownErrorFromBank() {
 
@@ -184,21 +187,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-       when(bank.refund(transactionID,amount)).thenReturn(-5);
+        when(bank.refund(transactionID, amount)).thenReturn(-5);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(2, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
     @Test
@@ -209,21 +212,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(-5000);
+        when(bank.refund(transactionID, amount)).thenReturn(-5000);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(2, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
 
@@ -236,21 +239,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(0);
+        when(bank.refund(transactionID, amount)).thenReturn(0);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Expired card"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
     @Test
@@ -259,18 +262,18 @@ public class RefundTests {
         long amount = 1000L;
         bank = mock(BankProxy.class);
 
-        when(bank.refund(transactionID,amount)).thenReturn(0);
+        when(bank.refund(transactionID, amount)).thenReturn(0);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(2, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.get(0).contains("An error has occurred"));
-        assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(1, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
     @Test
@@ -281,21 +284,21 @@ public class RefundTests {
         bank = mock(BankProxy.class);
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.AUTHORISED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
-        when(bank.refund(transactionID,amount)).thenReturn(0);
+        when(bank.refund(transactionID, amount)).thenReturn(0);
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(),transactionID);
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.contains("Refund is not captured"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
 
@@ -306,24 +309,24 @@ public class RefundTests {
         long amount = 1000L;
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amount,TestBankOperation.REFUNDED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.REFUNDED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
 
-        when(bank.refund(transactionID,amount)).thenReturn(0);
+        when(bank.refund(transactionID, amount)).thenReturn(0);
 
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-
-        int result = paymentProcessor.processPayment(ccInfo, amount,  TestBankOperation.REFUNDED.toString(),transactionID);
+        //exercise
+        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.get(0).contains("Transaction already refunded"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
     @Test
@@ -334,23 +337,23 @@ public class RefundTests {
         long amountBank = 2000L;
         transactionID = 10L;
 
-        Transaction auth_Transaction = new Transaction(0,transactionID,ccInfo,amountDB,TestBankOperation.CAPTURED.toString().toLowerCase(),getPresentDate());
+        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amountDB, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction);
 
         bank = mock(BankProxy.class);
 
-        when(bank.refund(transactionID,amountBank)).thenReturn(0);
+        when(bank.refund(transactionID, amountBank)).thenReturn(0);
 
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-
-        int result = paymentProcessor.processPayment(ccInfo, amountBank,  TestBankOperation.REFUNDED.toString(),transactionID);
+        //exercise
+        int result = paymentProcessor.processPayment(ccInfo, amountBank, TestBankOperation.REFUNDED.toString(), transactionID);
 
         //verify
         assertEquals(1, result);
-        assertEquals(1,logs.size());
+        assertEquals(1, logs.size());
         assertTrue(logs.get(0).contains("Refund is greater than amount captured"));
-        assertEquals(2,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(transactionID).getState());
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 }

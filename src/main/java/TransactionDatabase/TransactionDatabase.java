@@ -1,52 +1,44 @@
 package TransactionDatabase;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TransactionDatabase {
 
-    Map<Long,Transaction> database;
-
-    public TransactionDatabase(){
+    Map<Long, Transaction> database;
+    //Transaction database
+    public TransactionDatabase() {
         database = new HashMap<Long, Transaction>();
     }
+    //save transaction to database
+    public void saveTransaction(Transaction transaction) {
 
-    public void saveTransaction(Transaction transaction){
-
-        if(transaction == null){
+        if (transaction == null) {
 
         } else {
-            database.put(transaction.getId() ,transaction);
+            database.put(transaction.getId(), transaction);
         }
     }
+    //get the latest transaction for the specified transaction ID
+    public Transaction getTransactionByTransactionID(long transactionId) {
 
-    public Transaction getTransaction(long transactionId){
+        long id = -1L;
+        Transaction getTran;
 
+        for (long i = 0; i < database.size(); i++) {
+            getTran = database.get(i);
+            if (getTran.getTransactionId().equals(transactionId))
+                id = i;
+        }
+        // Return the list of keys whose value matches with given value.
+        if (id != -1L)
+            return database.get(id);
 
-        /*    Transaction getTrans =  database.get(id);
-            if(getTrans != null)
-                return  getTrans;
-            else return  null;
-*/
-            long id = -1L;
-            Transaction getTran;
-
-            for(long i = 0; i <database.size(); i++){
-                   getTran = database.get(i);
-                   if(getTran.getTransactionId().equals(transactionId))
-                       id = i;
-            }
-            // Return the list of keys whose value matches with given value.
-            if(id != -1L)
-                return database.get(id);
-
-        return  null;
-
+        return null;
     }
 
-    
-    public int countTransactions(){
-        return  database.size();
+    public int countTransactions() {
+        return database.size();
     }
 
 }

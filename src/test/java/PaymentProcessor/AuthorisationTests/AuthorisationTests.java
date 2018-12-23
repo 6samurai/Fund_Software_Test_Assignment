@@ -32,7 +32,7 @@ public class AuthorisationTests {
     public void setup() {
         transactionDB = new TransactionDatabase();
         logs = new ArrayList<String>();
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
+        ccInfo = new CCInfo("Test user American", "222, test address, TST101", TestCardTypes.AMERICAN_EXPRESS.toString(), "378282246310005", "05/2020", "1111");
     }
 
     @After
@@ -60,7 +60,7 @@ public class AuthorisationTests {
         //verify
         assertEquals(0, result);
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("authorised",transactionDB.getTransaction(transactionID).getState());
+        assertEquals("authorised",transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
 
@@ -82,7 +82,7 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Credit card details are invalid"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Insufficient funds on credit card"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("An unknown error has occurred"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("An unknown error has occurred"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
 
     @Test
@@ -167,9 +167,8 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("Expired card"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
-
 
 
     @Test
@@ -191,7 +190,7 @@ public class AuthorisationTests {
         assertEquals(1,transactionDB.countTransactions());
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("An unknown error has occurred"));
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
 
     }
 
@@ -203,7 +202,7 @@ public class AuthorisationTests {
         long amount = 1000L;
         transactionID =  10L;
         bank = null;
-   //     when(bank.auth(ccInfo, amount)).thenReturn(0L);
+
         PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
         //exercise
@@ -214,7 +213,7 @@ public class AuthorisationTests {
         assertEquals(1,logs.size());
         assertTrue(logs.get(0).contains("An error has occurred"));
         assertEquals(1,transactionDB.countTransactions());
-        assertEquals("invalid",transactionDB.getTransaction(-1).getState());
+        assertEquals("invalid",transactionDB.getTransactionByTransactionID(-1).getState());
     }
 
 }
