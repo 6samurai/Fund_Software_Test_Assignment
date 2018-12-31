@@ -85,17 +85,17 @@ public class VerifyOffline {
     //verify CVV with respective card type
     public boolean verifyCVV(String cvv, String cardType) {
         //verify that only integers are present
-        if (cvv.matches("[0-9]+"))
+        if (cvv.matches("[0-9]+") && cardType!=null)
             if ((cardType.contains(CardTypes.AMERICAN_EXPRESS.toString().toLowerCase()) && cvv.length() == 4) ||
                     (cvv.length() == 3 &&
                             (cardType.contains(CardTypes.VISA.toString().toLowerCase()) ||
                                     cardType.contains(CardTypes.MASTERCARD.toString().toLowerCase())
                             )
                     )
-            ) {
+            )
+            {
                 return true;
             }
-
         return false;
     }
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class TransactionDatabase {
 
-    Map<Long, Transaction> database;
+    private Map<Long, Transaction> database;
     //Transaction database
     public TransactionDatabase() {
         database = new HashMap<Long, Transaction>();

@@ -27,8 +27,8 @@ public class VerifyOfflineTests {
     }
 
 
-    @Test
-    public void testValid_AmericanExpress() {
+   /* @Test
+    public void testCardType_AmericanExpress_CardPrefix_37_CardLength_15() {
         //setup
         ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
 
@@ -40,21 +40,9 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testValidPrefix_InvalidCardType_AmericanExpress() {
+    public void testCardType_AmericanExpress_CardPrefix_55_CardLength_13() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "371449635398431", "11/2020", "1234");
-
-        //exercise
-        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
-
-        //verify
-        assertFalse(check);
-    }
-
-    @Test
-    public void testInvalidPrefix_ValidCardType_AmericanExpress() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "571449635398431", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "5514496353984", "11/2020", "1234");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -65,9 +53,9 @@ public class VerifyOfflineTests {
 
 
     @Test
-    public void testInvalidCardLength_ValidCardType_AmericanExpress() {
+    public void testCardType_AmericanExpress_CardPrefix_4_CardLength_Invalid() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "571449635391", "11/2020", "1234");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "453984311", "11/2020", "1234");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -77,9 +65,33 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testValid_MasterCard() {
+    public void testCardType_AmericanExpress_CardPrefix_Invalid_CardLength_16() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5555555555554444", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "3714496353121256", "11/2020", "1234");
+
+        //exercise
+        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
+
+        //verify
+        assertFalse(check);
+    }
+
+    @Test
+    public void testCardType_Mastercard_CardPrefix_37_CardLength_Invalid() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "3755555", "11/2020", "123");
+
+        //exercise
+        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
+
+        //verify
+        assertFalse(check);
+    }
+
+    @Test
+    public void testCardType_Mastercard_CardPrefix_55_CardLength_16() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5555515555555444", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -88,11 +100,10 @@ public class VerifyOfflineTests {
         assertTrue(check);
     }
 
-
     @Test
-    public void testValidCardNumber_InvalidCardType_MasterCard() {
+    public void testCardType_Mastercard_CardPrefix_4_CardLength_15() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "5555555555554444", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "455555555554444", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -102,9 +113,9 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testValidCardType_InvalidCardNumber_MasterCard() {
+    public void testCardType_Mastercard_CardPrefix_Invalid_CardLength_13() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "0555555555554444", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5555555554444", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -114,9 +125,9 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testValidCardType_InvalidCardLength_MasterCard() {
+    public void testCardType_Visa_CardPrefix_37_CardLength_16() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5555555555", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "3712345678914781", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -125,9 +136,20 @@ public class VerifyOfflineTests {
         assertFalse(check);
     }
     @Test
-    public void testValid_VISA() {
+    public void testCardType_Visa_CardPrefix_55_CardLength_Invalid() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "551210", "11/2020", "123");
+
+        //exercise
+        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
+
+        //verify
+        assertFalse(check);
+    }
+    @Test
+    public void testCardType_Visa_CardPrefix_4_CardLength_13() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -136,12 +158,10 @@ public class VerifyOfflineTests {
         assertTrue(check);
     }
 
-
-
     @Test
-    public void testValidCardNumber_InvalidCardType_VISA() {
+    public void testCardType_Visa_CardPrefix_Invalid_CardLength_15() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "4111111111111111", "11/2020", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "611111111111111", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -151,9 +171,9 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testValidCardType_InvalidCardNumber_VISA() {
+    public void testCardType_Invalid_CardPrefix_37_CardLength_13() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "1111111111111111", "11/2020", "132");
+        ccInfo = new CCInfo("Chris", "222,Test", "Invalid", "3712345678912", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -161,12 +181,33 @@ public class VerifyOfflineTests {
         //verify
         assertFalse(check);
     }
+    @Test
+    public void testCardType_Invalid_CardPrefix_55_CardLength_15() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test","Invalid", "553712345678912", "11/2020", "123");
 
+        //exercise
+        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
+
+        //verify
+        assertFalse(check);
+    }
+    @Test
+    public void testCardType_Invalid_CardPrefix_4_CardLength_16() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test", "Invalid", "4111111111111111", "11/2020", "123");
+
+        //exercise
+        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
+
+        //verify
+        assertFalse(check);
+    }
 
     @Test
-    public void testValidCardType_InvalidCardLength_VISA() {
+    public void testCardType_Invalid_CardPrefix_Invalid_CardLength_Invalid() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "41111111111111", "11/2020", "132");
+        ccInfo = new CCInfo("Chris", "222,Test","Invalid", "111411111", "11/2020", "123");
 
         //exercise
         boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
@@ -174,34 +215,6 @@ public class VerifyOfflineTests {
         //verify
         assertFalse(check);
     }
-
-
-
-    @Test
-    public void test_InvalidCardType() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.INVALID.toString(), "4111111111111111", "11/2020", "132");
-
-        //exercise
-        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
-
-        //verify
-        assertFalse(check);
-    }
-
-
-    @Test
-    public void test_BlankCardNumber() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "", "11/2020", "Test");
-
-        //exercise
-        boolean check = offlineVerification.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType());
-
-        //verify
-        assertFalse(check);
-    }
-
 
     @Test
     public void testVerifyExpiryDate_ValidDate() {
@@ -215,7 +228,6 @@ public class VerifyOfflineTests {
         assertTrue(check);
     }
 
-
     @Test
     public void testVerifyExpiryDate_ExpiredDate() {
         //setup
@@ -228,23 +240,10 @@ public class VerifyOfflineTests {
         assertFalse(check);
     }
 
-
     @Test
-    public void testVerifyInvalidDate_withLetters() {
+    public void testVerifyInvalidDate_withInvalidCharacters() {
         //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/20L0", "123");
-
-        //exercise
-        boolean check = offlineVerification.verifyExpiryDate(ccInfo.getCardExpiryDate());
-
-        //verify
-        assertFalse(check);
-    }
-
-    @Test
-    public void testVerifyInvalidDate_withSpecialCharacters() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/20%0", "123");
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/20L$", "123");
 
         //exercise
         boolean check = offlineVerification.verifyExpiryDate(ccInfo.getCardExpiryDate());
@@ -301,8 +300,8 @@ public class VerifyOfflineTests {
         //verify
         assertFalse(check);
     }
-
-    @Test
+*/
+/*    @Test
     public void testVerifyOtherInfoIncluded_ValidCVV_AmericanExpress() {
         //setup
         ccInfo = new CCInfo("Chris", "222, Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "4111111111111111", "11/2010", "1234");
@@ -387,9 +386,9 @@ public class VerifyOfflineTests {
     }
 
     @Test
-    public void testVerifyOtherInfoIncluded_InvalidCVV_ContainsLetters() {
+    public void testVerifyOtherInfoIncluded_InvalidCVV_InvalidCharacters() {
         //setup
-        ccInfo = new CCInfo("Chris", "222, Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "4111111111111111", "11/2010", "abc1");
+        ccInfo = new CCInfo("Chris", "222, Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "4111111111111111", "11/2010", "abc%");
 
         //exercise
         boolean check = offlineVerification.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType());
@@ -397,28 +396,6 @@ public class VerifyOfflineTests {
         //verify
         assertFalse(check);
     }
+*/
 
-    @Test
-    public void testVerifyOtherInfoIncluded_InvalidCVV_ContainsSpecialCharacters() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222, Test", TestCardTypes.MASTERCARD.toString(), "4111111111111111", "11/2010", "!@3");
-
-        //exercise
-        boolean check = offlineVerification.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType());
-
-        //verify
-        assertFalse(check);
-    }
-
-    @Test
-    public void testVerifyOtherInfoIncluded_InvalidCVV_ContainsNoDigits() {
-        //setup
-        ccInfo = new CCInfo("Chris", "222, Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2010", "Ad@");
-
-        //exercise
-        boolean check = offlineVerification.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType());
-
-        //verify
-        assertFalse(check);
-    }
 }

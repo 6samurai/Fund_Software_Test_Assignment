@@ -2,6 +2,8 @@ package PaymentProcessor;
 
 import Bank.BankProxy;
 import CardInfo.CCInfo;
+import PaymentProcessor.ErrorMessages.BankError;
+import PaymentProcessor.ErrorMessages.DatabaseError;
 import PaymentProcessor.ErrorMessages.UnknownError;
 import PaymentProcessor.ErrorMessages.UserError;
 import TransactionDatabase.Transaction;
@@ -61,119 +63,154 @@ public class PaymentProcessor {
         return false;
     }
 
-    //carries out all of the card detail verifications
-    public int verifyOffline(CCInfo ccInfo) throws Exception {
-        VerifyOffline verifyOffline = new VerifyOffline();
-        if (verifyOffline.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType())) {
-            if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
-                if (verifyOffline.verifyName(ccInfo.getCustomerName()))
-                    if (verifyOffline.verifyAddress(ccInfo.getCustomerAddress()))
-                        if (verifyOffline.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType()))
-                            return 0;
-                        else throw new UserError("Invalid CVV");
-                    else throw new UserError("Missing Address");
-                else throw new UserError("Missing Name");
-            } else throw new UserError("Expired card");
-        } else throw new UserError("Invalid Prefix of card");
-    }
-
     //verifies that all of the details provided are valid
-    public boolean OfflineVerification(CCInfo ccInfo) throws Exception {
+    public boolean offlineVerification(CCInfo ccInfo) throws Exception {
         if (verifyLuhn(ccInfo.getCardNumber())) {
             //verify card details
-            int verifyOperation = verifyOffline(ccInfo);
-            if (verifyOperation == 0) {
-                return true;
-            }
+            VerifyOffline verifyOffline = new VerifyOffline();
+            if (verifyOffline.verifyPrefix_CardType_CardLength(ccInfo.getCardNumber(), ccInfo.getCardType())) {
+                if (verifyOffline.verifyExpiryDate(ccInfo.getCardExpiryDate())) {
+                    if (verifyOffline.verifyName(ccInfo.getCustomerName())) {
+                        if (verifyOffline.verifyAddress(ccInfo.getCustomerAddress())) {
+                            if (verifyOffline.verifyCVV(ccInfo.getCardCVV(), ccInfo.getCardType())) {
+                                return true;
+                            } else throw new UserError("Invalid CVV");
+                        } else throw new UserError("Missing Address");
+                    } else throw new UserError("Missing Name");
+                } else throw new UserError("Expired card");
+            } else throw new UserError("Invalid Prefix of card");
         }
         throw new UserError("Invalid Card Number");
     }
 
-    //carries out the process payment operations for an Authorise request
-    public int processPayment(CCInfo ccInfo, long amount, String state) {
+    //carries out the process payment operations for Authorise request
+    public int processPayment(CCInfo ccInfo, long amount) {
 
-        Transaction currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
+        Transaction currentTransaction = null;
         try {
 
-            long bankAction = -1;
-            int actionResult = 2;
+            int result = 2;
+
+            if (transactionDB == null)
+                throw new DatabaseError();
+
+            if (bank == null)
+                throw new BankError();
+            currentTransaction = new Transaction(0, -1L, ccInfo, amount, "", getPresentDate());
             //card details check
-            if (OfflineVerification(ccInfo)) {
-                if (state.toLowerCase().contains(States.AUTHORISED.toString().toLowerCase())) {
-                    //receive result from bank method
-                    bankAction = bank.auth(ccInfo, amount);
-                    //carry out operation to system based on bank results
-                    actionResult = Authorise(bankAction, currentTransaction);
+            if (offlineVerification(ccInfo)) {
 
-                } else {
-                    throw new UserError("Invalid operation selected");
-                }
+                //carry out operation to system based on bank results
+                result = authorise(currentTransaction);
+
             }
-            return actionResult;
+            return result;
 
+        } catch (DatabaseError e) {
+            logs.add("Database is offline");
+            return 2;
+        } catch (BankError e) {
+            logs.add("Bank is offline");
+            return 2;
         } catch (UserError e) {
             setTransactionToInvalid(currentTransaction);
             logs.add(e.getMessage());
             return 1;
-
         } catch (UnknownError e) {
             setTransactionToInvalid(currentTransaction);
             logs.add(e.getMessage());
             return 2;
-
-        }
-        //this exception is set up to handle the case when no transaction is obtained or an unknown error has occurred with the bank method
-        catch (Exception e) {
-            setTransactionToInvalid(currentTransaction);
-            logs.add("An error has occurred");
+        } catch (Exception e) {
+            logs.add("An unexpected error has occurred");
             return 2;
         }
     }
 
-    //carries out the process payment operations for a Capture or Refund request
-    public int processPayment(CCInfo ccInfo, long amount, String state, long transactionID) {
+    //carries out the process payment operations for Capture request
+    public int processPayment(long transactionID) {
 
-        Transaction currentTransaction = new Transaction(transactionDB.countTransactions(), transactionID, ccInfo, amount, "", getPresentDate());
+        Transaction currentTransaction = null;
         try {
 
-            long bankAction = -1;
-            int actionResult = 2;
+            int result = 2;
+
+            if (transactionDB == null)
+                throw new DatabaseError();
+
+            if (bank == null)
+                throw new BankError();
+
+            //get latest transaction with the specified transaction ID
+            currentTransaction = transactionDB.getTransactionByTransactionID(transactionID);
             //card details check
-            if (OfflineVerification(ccInfo)) {
-
-                if (state.toLowerCase().contains(States.CAPTURED.toString().toLowerCase())) {
-                    //receive result from bank method
-                    bankAction = bank.capture(transactionID);
-                    //carry out operation to system based on bank results
-                    actionResult = Capture(bankAction, transactionID);
-
-                } else if (state.toLowerCase().contains(States.REFUNDED.toString().toLowerCase())) {
-                    //receive result from bank method
-                    bankAction = bank.refund(transactionID, amount);
-                    //carry out operation to system based on bank results
-                    actionResult = Refund(bankAction, amount, transactionID);
-
-                } else {
-                    throw new UserError("Invalid operation selected");
-                }
+            if (offlineVerification(currentTransaction.getCcInfo())) {
+                //carry out operation to system based on bank results
+                result = capture(currentTransaction);
             }
-            return actionResult;
+            return result;
 
+        } catch (DatabaseError e) {
+            logs.add("Database is offline");
+            return 2;
+        } catch (BankError e) {
+            logs.add("Bank is offline");
+            return 2;
         } catch (UserError e) {
             setTransactionToInvalid(currentTransaction);
             logs.add(e.getMessage());
             return 1;
-
         } catch (UnknownError e) {
             setTransactionToInvalid(currentTransaction);
             logs.add(e.getMessage());
             return 2;
-
+        } catch (Exception e) {
+            logs.add("An unexpected error has occurred");
+            return 2;
         }
-        //this exception is set up to handle the case when no transaction is obtained or an unknown error has occurred with the bank method
-        catch (Exception e) {
+    }
+
+    //carries out the process payment operations for Refund request
+    public int processPayment(long amount, long transactionID) {
+
+        //get latest transaction with the specified transaction ID
+        Transaction currentTransaction = null;
+
+        try {
+
+            if (transactionDB == null)
+                throw new DatabaseError();
+
+            if (bank == null)
+                throw new BankError();
+
+            int result = 2;
+            //get latest transaction with the specified transaction ID
+            currentTransaction = transactionDB.getTransactionByTransactionID(transactionID);
+            //card details check
+            if (offlineVerification(currentTransaction.getCcInfo())) {
+
+                //carry out operation to system based on bank results
+                result = refund(amount, currentTransaction);
+
+            }
+            return result;
+
+        } catch (DatabaseError e) {
+            logs.add("Database is offline");
+            return 2;
+        } catch (BankError e) {
+            logs.add("Bank is offline");
+            return 2;
+        } catch (UserError e) {
             setTransactionToInvalid(currentTransaction);
-            logs.add("An error has occurred");
+            logs.add(e.getMessage());
+            return 1;
+        } catch (UnknownError e) {
+            setTransactionToInvalid(currentTransaction);
+            logs.add(e.getMessage());
+            return 2;
+        } catch (Exception e) {
+            logs.add("An unexpected error has occurred");
             return 2;
         }
     }
@@ -190,35 +227,44 @@ public class PaymentProcessor {
     }
 
     //carries out Authorise operations on system
-    private int Authorise(long transactionID, Transaction currentTransaction) throws Exception {
+    public int authorise(Transaction currentTransaction) throws Exception {
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
+        long transactionID = bank.auth(currentTransaction.getCcInfo(), currentTransaction.getAmount());
+        Transaction checkTransaction = transactionDB.getTransactionByTransactionID(transactionID);
+
 
         //check if a valid transaction ID was provided from bank
         if (transactionID > 0) {
-            //save current transaction to transaction DB with updated info
-            currentTransaction.setId(transactionDB.countTransactions());
-            currentTransaction.setState(States.AUTHORISED.toString());
-            currentTransaction.setTransactionId(transactionID);
-            transactionDB.saveTransaction(currentTransaction);
-            return 0;
+            if(currentTransaction.getAmount()>0){
+                if (checkTransaction == null) {
+                    //save current transaction to transaction DB with updated info
+                    currentTransaction.setId(transactionDB.countTransactions());
+                    currentTransaction.setState(States.AUTHORISED.toString());
+                    currentTransaction.setTransactionId(transactionID);
+                    transactionDB.saveTransaction(currentTransaction);
+                    return 0;
+                } else {
+                    throw new UserError("Transaction has already been authorised");
+                }
+
+            } else
+                throw new UserError("Invalid amount");
+
+
         } else if (transactionID == -1) {
             throw new UserError("Credit card details are invalid");
         } else if (transactionID == -2) {
             throw new UserError("Insufficient funds on credit card");
         } else if (transactionID == -3) {
             throw new UnknownError();
-
         }
         //in the event where the bank system returns an unknown transaction value
         else throw new UnknownError();
     }
 
     //carries out capture operation on system
-    public int Capture(long bankAction, long transactionID) throws Exception {
-
-        //get latest transaction with the specified transaction ID
-        Transaction currentTransaction = transactionDB.getTransactionByTransactionID(transactionID);
+    public int capture(Transaction currentTransaction) throws Exception {
 
         //get current date
         Calendar presentDate = getPresentDate();
@@ -226,6 +272,8 @@ public class PaymentProcessor {
         //get date 1 week ahead of transaction retrieved
         Calendar transactionWeek = currentTransaction.getDate();
         transactionWeek.add(Calendar.WEEK_OF_YEAR, +1);
+
+        int bankAction = bank.capture(currentTransaction.getTransactionId());
 
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
@@ -244,7 +292,7 @@ public class PaymentProcessor {
             //in the even where the transaction was already Captured or Refunded
             else if (currentTransaction.getState().contains(States.CAPTURED.toString().toLowerCase()) || currentTransaction.getState().contains(States.REFUNDED.toString().toLowerCase())) {
 
-                throw new UserError("Transaction already processed");
+                throw new UserError("Transaction already captured");
             } else {
                 throw new UserError("Transaction does not exist");
             }
@@ -274,23 +322,23 @@ public class PaymentProcessor {
     }
 
     //carries out refund operation on system
-    public int Refund(long bankAction, long amount, long transactionID) throws Exception {
-        //get latest transaction with the specified transaction ID
-        Transaction currentTransaction = transactionDB.getTransactionByTransactionID(transactionID);
+    public int refund(long amount, Transaction currentTransaction) throws Exception {
 
         //get current date
         Calendar presentDate = getPresentDate();
 
         //get date 1 month ahead of transaction retrieved
         Calendar monthRefund = currentTransaction.getDate();
-        monthRefund.add(Calendar.MONTH, +1);
+        monthRefund.add(Calendar.DAY_OF_MONTH, +30);
+
+        int bankAction = bank.refund(currentTransaction.getTransactionId(), amount);
 
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
         if (bankAction == 0 && monthRefund.compareTo(presentDate) >= 0) {
 
             //verify that specified transaction is Captured and the amount specified is equal to the value recorded in DB
-            if (currentTransaction.getState().contains(States.CAPTURED.toString().toLowerCase()) && currentTransaction.getAmount() == amount) {
+            if (currentTransaction.getState().contains(States.CAPTURED.toString().toLowerCase()) && currentTransaction.getAmount() >= amount) {
 
                 //save new transaction with Refunded state
                 Transaction newTran = new Transaction(transactionDB.countTransactions(), currentTransaction.getTransactionId(), currentTransaction.getCcInfo(),
@@ -307,7 +355,7 @@ public class PaymentProcessor {
             else if (currentTransaction.getState().contains(States.REFUNDED.toString().toLowerCase())) {
                 throw new UserError("Transaction already refunded");
 
-            } else
+            } else if(currentTransaction.getAmount() < amount)
                 throw new UserError("Refund is greater than amount captured");
 
         } else if (bankAction == -1) {
@@ -330,7 +378,8 @@ public class PaymentProcessor {
 
             throw new UnknownError();
 
-        } else throw new UnknownError();
+        }
+        throw new UnknownError();
     }
 
     //get current date

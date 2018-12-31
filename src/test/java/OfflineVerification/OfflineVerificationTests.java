@@ -30,13 +30,13 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testValid_OfflineVerification_AmericanExpress() {
+    public void testValid_offlineVerification_AmericanExpress() {
         try {
             //setup
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -48,14 +48,14 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testValid_OfflineVerification_Visa() {
+    public void testValid_offlineVerification_Visa() {
 
         try {
             //setup
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2020", "123");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -66,14 +66,14 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testValid_OfflineVerification_Mastercard() {
+    public void testValid_offlineVerification_Mastercard() {
 
         try {
             //setup
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.MASTERCARD.toString(), "5105105105105100", "11/2020", "124");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -84,14 +84,14 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testInvalid_OfflineVerification_CardType_AmericanExpress_CardNumber_Visa() {
+    public void testInvalid_offlineVerification_CardType_AmericanExpress_CardNumber_Visa() {
         //setup
         String errorMessage = "";
         try {
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "4111111111111111", "11/2020", "1234");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -105,7 +105,7 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testInvalid_OfflineVerification_ExpiredCard() {
+    public void testInvalid_offlineVerification_ExpiredCard() {
 
         //setup
         String errorMessage = "";
@@ -113,7 +113,7 @@ public class OfflineVerificationTests {
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2000", "1234");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -128,7 +128,7 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testInvalid_OfflineVerification_MissingInformation_Name() {
+    public void testInvalid_offlineVerification_MissingInformation_Name() {
 
         //setup
         String errorMessage = "";
@@ -136,7 +136,7 @@ public class OfflineVerificationTests {
             ccInfo = new CCInfo("", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "123");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -152,14 +152,14 @@ public class OfflineVerificationTests {
 
 
     @Test
-    public void testInvalid_OfflineVerification_MissingInformation_Address() {
+    public void testInvalid_offlineVerification_MissingInformation_Address() {
         //setup
         String errorMessage = "";
         try {
             ccInfo = new CCInfo("Chris", "", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "123");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -174,14 +174,14 @@ public class OfflineVerificationTests {
     }
 
     @Test
-    public void testInvalid_OfflineVerification_MissingInformation_CVV() {
+    public void testInvalid_offlineVerification_MissingInformation_CVV() {
         //setup
         String errorMessage = "";
         try {
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "11/2030", "");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;
@@ -203,7 +203,7 @@ public class OfflineVerificationTests {
             ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398432", "11/2020", "1234");
 
             //exercise
-            check = paymentProcessor.OfflineVerification(ccInfo);
+            check = paymentProcessor.offlineVerification(ccInfo);
 
         } catch (Exception e) {
             errorThrown = true;

@@ -55,23 +55,27 @@ public class CaptureTests {
 
     @Test
     public void testValidCaptureProcess() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
 
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
 
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
+            bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(0);
 
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(0);
-
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
 
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
         //verify
         assertEquals(0, result);
         assertEquals(0, logs.size());
@@ -81,232 +85,228 @@ public class CaptureTests {
 
     @Test
     public void testInvalidCaptureProcess_TransactionDoesNotExistFromBank() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
 
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
+            bank = mock(BankProxy.class);
 
-        bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(-1);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-        when(bank.capture(transactionID)).thenReturn(-1);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
         //verify
-        assertEquals(1, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.contains("Transaction does not exist"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
+
+        assertTrue(exceptionMsg.contains("Transaction does not exist"));
+
     }
 
     @Test
     public void testInvalidCaptureProcess_TransactionAlreadyCapturedFromBank() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
 
-        //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
 
-        long amount = 1000L;
-        transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
+            bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(-2);
 
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(-2);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
 
         //verify
-        assertEquals(1, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.contains("Transaction has already been captured"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
 
+        assertTrue(exceptionMsg.contains("Transaction has already been captured"));
+
+    }
 
     @Test
     public void testInvalidCaptureProcess_VoidTransaction() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
 
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
+            bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(-3);
 
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(-3);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
         //verify
         assertEquals(1, result);
         assertEquals(2, transactionDB.countTransactions());
         assertEquals("void", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
-
-    @Test
-    public void testInvalidCaptureProcess_UnknownErrorFromBank() {
-
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
-
-        bank = mock(BankProxy.class);
-
-        when(bank.capture(transactionID)).thenReturn(-4);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
-        //verify
-        assertEquals(2, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
-
-    @Test
-    public void testInvalidCaptureProcess_ReturnAnUnregisteredValueFromBank() {
-
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
-
-        bank = mock(BankProxy.class);
-
-        when(bank.capture(transactionID)).thenReturn(-40000);
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
-        //verify
-        assertEquals(2, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.contains("An unknown error has occurred"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
-
-    @Test
-    public void testInvalidCaptureProcess_BankReturnsValid_ExpiredCardFromDB() {
-
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2000", "1234");
-
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
-
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(0);
-
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
-        //verify
-        assertEquals(1, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.get(0).contains("Expired card"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
-
-    @Test
-    public void testInvalidCaptureProcess_BankReturnValid_NoRecordInDatabase() {
-
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(0);
-
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
-        //verify
-        assertEquals(2, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.get(0).contains("An error has occurred"));
-        assertEquals(1, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
-
-    @Test
-    public void testInvalidCaptureProcess_BankReturnValid_AlreadyCapturedInDB() {
-
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
-
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
-        transactionDB.saveTransaction(auth_Transaction);
-
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(0);
-
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
-        //verify
-        assertEquals(1, result);
-        assertEquals(1, logs.size());
-        assertTrue(logs.get(0).contains("Transaction already processed"));
-        assertEquals(2, transactionDB.countTransactions());
-        assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
-    }
-
     @Test
     public void testInvalidCaptureProcess_BankReturnValid_TransactionVoided() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
 
-        //setup
-        long amount = 1000L;
-        transactionID = 10L;
+            Calendar date = getPresentDate();
+            date.add(Calendar.WEEK_OF_YEAR, -2);
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), date);
+            transactionDB.saveTransaction(auth_Transaction);
 
-        Calendar date = getPresentDate();
-        date.add(Calendar.WEEK_OF_YEAR, -2);
-        Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), date);
-        transactionDB.saveTransaction(auth_Transaction);
+            bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(0);
 
-        bank = mock(BankProxy.class);
-        when(bank.capture(transactionID)).thenReturn(0);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
-        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
-        //exercise
-        int result = paymentProcessor.processPayment(ccInfo, amount, TestBankOperation.CAPTURED.toString(), transactionID);
-
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
         //verify
         assertEquals(1, result);
         assertEquals(0, logs.size());
         assertEquals(2, transactionDB.countTransactions());
         assertEquals("void", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
+
+    @Test
+    public void testInvalidCaptureProcess_UnknownErrorFromBank() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
+
+            bank = mock(BankProxy.class);
+
+            when(bank.capture(transactionID)).thenReturn(-4);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
+
+        //verify
+        assertTrue(exceptionMsg.contains("An unknown error has occurred"));
+    }
+
+    @Test
+    public void testInvalidCaptureProcess_ReturnNegativeUnregisteredValueFromBank() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
+
+            bank = mock(BankProxy.class);
+
+            when(bank.capture(transactionID)).thenReturn(-5);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
+
+        //verify
+
+        assertTrue(exceptionMsg.contains("An unknown error has occurred"));
+
+    }
+
+    @Test
+    public void testInvalidCaptureProcess_ReturnPositiveUnregisteredValueFromBank() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
+
+            bank = mock(BankProxy.class);
+
+            when(bank.capture(transactionID)).thenReturn(1);
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
+
+        //verify
+
+        assertTrue(exceptionMsg.contains("An unknown error has occurred"));
+
+    }
+
+    @Test
+    public void testInvalidCaptureProcess_BankReturnValid_AlreadyCapturedInDB() {
+        String exceptionMsg = "";
+        int result = -1;
+        try {
+            //setup
+            long amount = 1000L;
+            transactionID = 10L;
+
+            Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
+            transactionDB.saveTransaction(auth_Transaction);
+
+            bank = mock(BankProxy.class);
+            when(bank.capture(transactionID)).thenReturn(0);
+
+            PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+
+            //exercise
+            result = paymentProcessor.capture(auth_Transaction);
+        } catch (Exception e) {
+            exceptionMsg = e.getMessage();
+        }
+        //verify
+
+        assertTrue(exceptionMsg.contains("Transaction already captured"));
+
+    }
+
 
 }
 
