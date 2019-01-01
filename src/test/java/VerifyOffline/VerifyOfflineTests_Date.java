@@ -62,4 +62,16 @@ public class VerifyOfflineTests_Date {
         assertFalse(check);
     }
 
+    @Test
+    public void testVerifyInvalidDate_withMissingDate() {
+        //setup
+        ccInfo = new CCInfo("Chris", "222,Test", TestCardTypes.VISA.toString(), "4111111111111111", "", "123");
+
+        //exercise
+        boolean check = offlineVerification.verifyExpiryDate(ccInfo.getCardExpiryDate());
+
+        //verify
+        assertFalse(check);
+    }
+
 }

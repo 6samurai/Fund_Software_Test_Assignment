@@ -38,6 +38,13 @@ public class PaymentProcessorTests {
         logs.clear();
     }
 
+    private Calendar getPresentDate() {
+        Calendar presentWeek = Calendar.getInstance();
+        presentWeek.set(Calendar.HOUR_OF_DAY, 0);
+        presentWeek.set(Calendar.MINUTE, 0);
+        presentWeek.set(Calendar.SECOND, 0);
+        return presentWeek;
+    }
     @Test
     public void testMultiple_ValidCaptureTransactions_DifferentAccounts() {
         //setup
@@ -51,9 +58,9 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
         long transactionID_2 = 2L;
         long transactionID_3 = 3L;
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
         transactionDB.saveTransaction(auth_Transaction_2);
         transactionDB.saveTransaction(auth_Transaction_3);
@@ -93,7 +100,7 @@ public class PaymentProcessorTests {
         long amount_3 = 200L;
         long transactionID_3 = 3L;
 
-        Transaction auth_Transaction_3 = new Transaction(0, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_3 = new Transaction(0, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
 
         transactionDB.saveTransaction(auth_Transaction_3);
 
@@ -139,9 +146,9 @@ public class PaymentProcessorTests {
         long transactionID_2 = 2L;
         long transactionID_3 = 3L;
 
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_3, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
 
         transactionDB.saveTransaction(auth_Transaction_1);
         transactionDB.saveTransaction(auth_Transaction_2);
@@ -188,10 +195,10 @@ public class PaymentProcessorTests {
         long transactionID_3 = 3L;
         long transactionID_4 = 4L;
 
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_1, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_1, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_4 = new Transaction(3, transactionID_4, ccInfo_1, amount_4, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_1, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_1, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_4 = new Transaction(3, transactionID_4, ccInfo_1, amount_4, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
         transactionDB.saveTransaction(auth_Transaction_2);
         transactionDB.saveTransaction(auth_Transaction_3);
@@ -237,7 +244,7 @@ public class PaymentProcessorTests {
         when(bank.capture(transactionID)).thenReturn(0);
         when(bank.refund(transactionID, amount)).thenReturn(0);
 
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID, ccInfo_1, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID, ccInfo_1, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         //exercise
@@ -266,10 +273,10 @@ public class PaymentProcessorTests {
         long transactionID_3 = 3L;
         long transactionID_4 = 4L;
 
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_1, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_1, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_4 = new Transaction(3, transactionID_4, ccInfo_1, amount_4, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_1, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_3 = new Transaction(2, transactionID_3, ccInfo_1, amount_3, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_4 = new Transaction(3, transactionID_4, ccInfo_1, amount_4, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
         transactionDB.saveTransaction(auth_Transaction_2);
         transactionDB.saveTransaction(auth_Transaction_3);
@@ -330,7 +337,7 @@ public class PaymentProcessorTests {
 
         when(bank.capture(transactionID)).thenReturn(0);
 
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID, ccInfo_1, amount, "invalid state", Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID, ccInfo_1, amount, "invalid state", getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         //exercise
@@ -346,7 +353,6 @@ public class PaymentProcessorTests {
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID).getState());
     }
 
-
     @Test
     public void testMultiple_ValidCaptureTransactions_DifferentAccounts_BankOffline() {
         //setup
@@ -360,8 +366,8 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
         long transactionID_2 = 2L;
         long transactionID_3 = 3L;
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
-        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
+        Transaction auth_Transaction_2 = new Transaction(1, transactionID_2, ccInfo_2, amount_2, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
 
         transactionDB.saveTransaction(auth_Transaction_1);
         transactionDB.saveTransaction(auth_Transaction_2);
@@ -499,7 +505,6 @@ public class PaymentProcessorTests {
     }
 
 
-
     @Test
     public void testSingleOperation_InvalidCCinfo_InvalidTransactionID_Authorisation() {
         //setup
@@ -533,7 +538,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.capture(transactionID_1)).thenReturn(0);
@@ -559,7 +564,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.capture(transactionID_1)).thenReturn(0);
@@ -577,7 +582,6 @@ public class PaymentProcessorTests {
     }
 
 
-
     @Test
     public void testSingleOperation_ValidCCinfo_InvalidTransactionID_Capture() {
         //setup
@@ -587,7 +591,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.capture(transactionID_1)).thenReturn(-4);
@@ -613,7 +617,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.capture(transactionID_1)).thenReturn(-4);
@@ -630,7 +634,6 @@ public class PaymentProcessorTests {
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
     }
 
-
     @Test
     public void testSingleOperation_ValidCCinfo_GreaterAmount_ValidTransactionID_Refund() {
         //setup
@@ -640,7 +643,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
         long invalid_amount = 2000L;
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(0);
@@ -666,7 +669,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
         long invalid_amount = 100L;
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(0);
@@ -683,7 +686,6 @@ public class PaymentProcessorTests {
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
     }
 
-
     @Test
     public void testSingleOperation_ValidCCinfo_ValidAmount_InvalidTransactionID_Refund() {
         //setup
@@ -693,7 +695,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(-5);
@@ -719,7 +721,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
         long invalid_amount = 100L;
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(-4);
@@ -736,7 +738,6 @@ public class PaymentProcessorTests {
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
     }
 
-
     @Test
     public void testSingleOperation_VoidState() {
         //setup
@@ -745,7 +746,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.VOID.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.VOID.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(0);
@@ -762,6 +763,29 @@ public class PaymentProcessorTests {
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
     }
 
+    @Test
+    public void testSingleOperation_ResultsInVoidState() {
+        //setup
+        CCInfo ccInfo_1 = new CCInfo("Chris", "222,Test", CardTypes.AMERICAN_EXPRESS.toString(), "371449635398431", "11/2020", "1234");
+        long amount_1 = 1000L;
+        long transactionID_1 = 1L;
+        Calendar oldDate = getPresentDate();
+        oldDate.set(Calendar.MONTH, -1);
+        bank = mock(BankProxy.class);
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), oldDate);
+        transactionDB.saveTransaction(auth_Transaction_1);
+
+        when(bank.capture(transactionID_1)).thenReturn(0);
+
+        //exercise
+        PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
+        int result_operation_1 = paymentProcessor.processPayment(transactionID_1);
+
+        //verify
+        assertEquals(1, result_operation_1);
+        assertEquals(2, transactionDB.countTransactions());
+        assertEquals("void", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
+    }
 
     @Test
     public void testSingleOperation_InvalidState() {
@@ -771,7 +795,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.INVALID.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.INVALID.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(0);
@@ -787,14 +811,6 @@ public class PaymentProcessorTests {
         assertEquals(2, transactionDB.countTransactions());
         assertEquals("invalid", transactionDB.getTransactionByTransactionID(transactionID_1).getState());
     }
-
-
-
-
-
-
-
-
 
     @Test
     public void testSingleOperation_ValidDetails_Capture() {
@@ -805,7 +821,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.capture(transactionID_1)).thenReturn(0);
@@ -830,7 +846,7 @@ public class PaymentProcessorTests {
         long transactionID_1 = 1L;
 
         bank = mock(BankProxy.class);
-        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), Calendar.getInstance());
+        Transaction auth_Transaction_1 = new Transaction(0, transactionID_1, ccInfo_1, amount_1, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
         transactionDB.saveTransaction(auth_Transaction_1);
 
         when(bank.refund(transactionID_1,amount_1)).thenReturn(0);
