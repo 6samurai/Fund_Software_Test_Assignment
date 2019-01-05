@@ -60,19 +60,17 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = 0;
             transactionID = 10L;
-
+            
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
-
-            bank = mock(BankProxy.class);
-            when(bank.capture(transactionID)).thenReturn(0);
 
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -90,17 +88,14 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = -1;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
-
-            bank = mock(BankProxy.class);
-
-            when(bank.capture(transactionID)).thenReturn(-1);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -116,19 +111,15 @@ public class CaptureTests {
         int result = -1;
         try {
             //setup
-
             long amount = 1000L;
+            int bankAction = -2;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
-
-            bank = mock(BankProxy.class);
-            when(bank.capture(transactionID)).thenReturn(-2);
-
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -145,18 +136,16 @@ public class CaptureTests {
         int result = -1;
         try {
             //setup
+            int bankAction = -3;
             long amount = 1000L;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
 
-            bank = mock(BankProxy.class);
-            when(bank.capture(transactionID)).thenReturn(-3);
-
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -172,6 +161,7 @@ public class CaptureTests {
         int result = -1;
         try {
             //setup
+            int bankAction =0;
             long amount = 1000L;
             transactionID = 10L;
 
@@ -180,13 +170,10 @@ public class CaptureTests {
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), date);
             transactionDB.saveTransaction(auth_Transaction);
 
-            bank = mock(BankProxy.class);
-            when(bank.capture(transactionID)).thenReturn(0);
-
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -204,17 +191,14 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = -4;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
-
-            bank = mock(BankProxy.class);
-
-            when(bank.capture(transactionID)).thenReturn(-4);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -230,17 +214,15 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = -5;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
 
-            bank = mock(BankProxy.class);
-
-            when(bank.capture(transactionID)).thenReturn(-5);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -258,17 +240,14 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = 1;
             transactionID = 10L;
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
-
-            bank = mock(BankProxy.class);
-
-            when(bank.capture(transactionID)).thenReturn(1);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -286,18 +265,16 @@ public class CaptureTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = 0;
             transactionID = 10L;
 
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
 
-            bank = mock(BankProxy.class);
-            when(bank.capture(transactionID)).thenReturn(0);
-
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.capture(auth_Transaction);
+            result = paymentProcessor.capture(bankAction,auth_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }

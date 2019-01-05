@@ -99,9 +99,9 @@ public class PaymentProcessor {
             currentTransaction = new Transaction(0, -1L, ccInfo, amount, "", getPresentDate());
             //card details check
             if (offlineVerification(ccInfo)) {
-
+                long transactionID = bank.auth(ccInfo, amount);
                 //carry out operation to system based on bank results
-                result = authorise(currentTransaction);
+                result = authorise(transactionID,currentTransaction);
 
             }
             return result;
@@ -145,7 +145,8 @@ public class PaymentProcessor {
             //card details check
             if (offlineVerification(currentTransaction.getCcInfo())) {
                 //carry out operation to system based on bank results
-                result = capture(currentTransaction);
+                int bankAction = bank.capture(transactionID);
+                result = capture(bankAction,currentTransaction);
             }
             return result;
 
@@ -188,9 +189,9 @@ public class PaymentProcessor {
             currentTransaction = transactionDB.getTransactionByTransactionID(transactionID);
             //card details check
             if (offlineVerification(currentTransaction.getCcInfo())) {
-
+                int bankAction = bank.refund(transactionID, amount);
                 //carry out operation to system based on bank results
-                result = refund(amount, currentTransaction);
+                result = refund(amount,bankAction, currentTransaction);
 
             }
             return result;
@@ -227,10 +228,10 @@ public class PaymentProcessor {
     }
 
     //carries out Authorise operations on system
-    public int authorise(Transaction currentTransaction) throws Exception {
+    public int authorise(long transactionID,Transaction currentTransaction) throws Exception {
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
-        long transactionID = bank.auth(currentTransaction.getCcInfo(), currentTransaction.getAmount());
+
         Transaction checkTransaction = transactionDB.getTransactionByTransactionID(transactionID);
 
 
@@ -264,7 +265,7 @@ public class PaymentProcessor {
     }
 
     //carries out capture operation on system
-    public int capture(Transaction currentTransaction) throws Exception {
+    public int capture(int bankAction,Transaction currentTransaction) throws Exception {
 
         //get current date
         Calendar presentDate = getPresentDate();
@@ -273,7 +274,7 @@ public class PaymentProcessor {
         Calendar transactionWeek = currentTransaction.getDate();
         transactionWeek.add(Calendar.WEEK_OF_YEAR, +1);
 
-        int bankAction = bank.capture(currentTransaction.getTransactionId());
+
 
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)
@@ -322,7 +323,7 @@ public class PaymentProcessor {
     }
 
     //carries out refund operation on system
-    public int refund(long amount, Transaction currentTransaction) throws Exception {
+    public int refund(long amount,int bankAction, Transaction currentTransaction) throws Exception {
 
         //get current date
         Calendar presentDate = getPresentDate();
@@ -331,7 +332,6 @@ public class PaymentProcessor {
         Calendar monthRefund = currentTransaction.getDate();
         monthRefund.add(Calendar.DAY_OF_MONTH, +30);
 
-        int bankAction = bank.refund(currentTransaction.getTransactionId(), amount);
 
         //maven's default compiler target bytecode version is 1.5 - this version does not support switch statements with strings.
         //Thus for compatibility reasons this is not modified and a sequence of if statements are used instead of a switch(string)

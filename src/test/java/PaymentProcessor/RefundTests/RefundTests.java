@@ -60,16 +60,14 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
+            int bankAction = 0;
             transactionID = 10L;
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
-
-            bank = mock(BankProxy.class);
-            when(bank.refund(transactionID, amount)).thenReturn(0);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -87,17 +85,14 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -1;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
-
-            when(bank.refund(transactionID, amount)).thenReturn(-1);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -114,17 +109,15 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -2;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
-
-            when(bank.refund(transactionID, amount)).thenReturn(-2);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -139,17 +132,16 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -3;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.REFUNDED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(-3);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -166,17 +158,16 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -4;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(-4);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -193,17 +184,15 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -5;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(-5);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
-
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -218,17 +207,16 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = -6;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(-6);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
 
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
@@ -245,17 +233,16 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = 1;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(1);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
 
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
@@ -272,17 +259,16 @@ public class RefundTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
+            int bankAction = 0;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            when(bank.refund(transactionID, amount)).thenReturn(0);
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
 
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
@@ -301,19 +287,15 @@ public class RefundTests {
             //setup
             long amount = 1000L;
             transactionID = 10L;
-
+            int bankAction = 0;
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.REFUNDED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
-
-            bank = mock(BankProxy.class);
-
-            when(bank.refund(transactionID, amount)).thenReturn(0);
 
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
 
-            result = paymentProcessor.refund(amount, capt_Transaction);
+            result = paymentProcessor.refund(amount,bankAction, capt_Transaction);
 
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
@@ -332,19 +314,16 @@ public class RefundTests {
             //setup
             long amountDB = 1000L;
             long amountBank = 2000L;
+            int bankAction = 0;
             transactionID = 10L;
 
             Transaction capt_Transaction = new Transaction(0, transactionID, ccInfo, amountDB, TestBankOperation.CAPTURED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(capt_Transaction);
 
-            bank = mock(BankProxy.class);
-
-            when(bank.refund(transactionID, amountBank)).thenReturn(0);
-
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.refund(amountBank, capt_Transaction);
+            result = paymentProcessor.refund(amountBank,bankAction, capt_Transaction);
 
         } catch (Exception e) {
             exceptionMsg = e.getMessage();

@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="0e6bb08d-387e-48a4-bfd2-cd8fe8f02b1a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/PaymentProcessor/PaymentProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/PaymentProcessor/PaymentProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/PaymentProcessor/PaymentProcessorTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/PaymentProcessor/PaymentProcessorTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/PaymentProcessor/AuthorisationTests/AuthorisationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/PaymentProcessor/AuthorisationTests/AuthorisationTests.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -36,18 +38,18 @@
     <SUITE FILE_PATH="coverage/assignment$OfflineVerificationTests.ic" NAME="OfflineVerificationTests Coverage Results" MODIFIED="1541775221021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>OfflineVerification.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/assignment$All_in_assignment.ic" NAME="All in assignment Coverage Results" MODIFIED="1546337609324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/assignment$All_in_assignment.ic" NAME="All in assignment Coverage Results" MODIFIED="1546684054328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
-    <option name="myElementSize" value="187" />
+    <option name="myElementSize" value="98" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="216" lean-forward="true" selection-start-line="216" selection-end-line="216" />
+            <state relative-caret-position="374">
+              <caret line="191" column="58" selection-start-line="191" selection-start-column="58" selection-end-line="191" selection-end-column="58" />
               <folding>
                 <element signature="method#PaymentProcessor#0;class#PaymentProcessor#0" />
                 <element signature="method#PaymentProcessor#1;class#PaymentProcessor#0" />
@@ -63,42 +65,11 @@
                 <element signature="e#2460#2860#1" />
                 <element signature="e#2548#2793#1" />
                 <element signature="e#2650#2726#1" />
-                <element signature="method#processPayment#0;class#PaymentProcessor#0" />
-                <element signature="e#3289#3828#0" />
-                <element signature="e#3647#3790#1" />
-                <element signature="e#3853#3931#0" />
-                <element signature="e#3952#4026#0" />
-                <element signature="e#4047#4175#0" />
-                <element signature="e#4199#4327#0" />
-                <element signature="e#4348#4439#0" />
-                <element signature="method#processPayment#1;class#PaymentProcessor#0" />
-                <element signature="e#4628#5256#0" />
-                <element signature="e#5079#5218#1" />
-                <element signature="e#5281#5359#0" />
-                <element signature="e#5380#5454#0" />
-                <element signature="e#5475#5603#0" />
-                <element signature="e#5627#5755#0" />
-                <element signature="e#5776#5867#0" />
-                <element signature="method#processPayment#2;class#PaymentProcessor#0" />
-                <element signature="e#6136#6772#0" />
-                <element signature="e#6586#6734#1" />
-                <element signature="e#6797#6875#0" />
-                <element signature="e#6896#6970#0" />
-                <element signature="e#6991#7119#0" />
-                <element signature="e#7143#7271#0" />
-                <element signature="e#7292#7383#0" />
                 <element signature="method#setTransactionToInvalid#0;class#PaymentProcessor#0" />
                 <element signature="e#7554#7755#1" />
-                <element signature="method#authorise#0;class#PaymentProcessor#0" />
-                <element signature="e#7896#8017#0" />
-                <element signature="e#8450#9179#1" />
-                <element signature="e#8500#9107#1" />
-                <element signature="e#8548#8983#1" />
-                <element signature="e#8989#9092#1" />
                 <element signature="e#9210#9289#1" />
                 <element signature="e#9320#9401#1" />
                 <element signature="e#9432#9481#1" />
-                <element signature="method#capture#0;class#PaymentProcessor#0" />
                 <element signature="e#10074#10195#0" />
                 <element signature="e#10403#11437#1" />
                 <element signature="e#10568#10984#1" />
@@ -108,8 +79,6 @@
                 <element signature="e#11569#11656#1" />
                 <element signature="e#11841#12231#1" />
                 <element signature="e#12259#12309#1" />
-                <element signature="method#refund#0;class#PaymentProcessor#0" />
-                <element signature="e#12824#12945#0" />
                 <element signature="e#13149#14489#1" />
                 <element signature="e#13416#13832#1" />
                 <element signature="e#14014#14092#1" />
@@ -125,23 +94,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/TransactionDatabase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
+            <state relative-caret-position="187">
+              <caret line="13" column="57" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#saveTransaction#0;class#TransactionDatabase#0" />
+                <element signature="method#getTransactionByTransactionID#0;class#TransactionDatabase#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
-              <caret line="114" selection-start-line="114" selection-end-line="114" />
             </state>
           </provider>
         </entry>
@@ -158,16 +120,47 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="54" />
+            <state relative-caret-position="83">
+              <caret line="156" column="96" lean-forward="true" selection-start-line="156" selection-start-column="96" selection-end-line="156" selection-end-column="96" />
               <folding>
                 <element signature="method#setup#0;class#AuthorisationTests#0" />
                 <element signature="method#teardown#0;class#AuthorisationTests#0" />
+                <element signature="method#getPresentDate#0;class#AuthorisationTests#0" />
+                <element signature="method#testValidAuthorisationRequest#0;class#AuthorisationTests#0" />
+                <element signature="e#1712#2260#0" />
+                <element signature="e#2281#2335#0" />
                 <element signature="method#testInvalidAuthorisationRequest_InvalidCreditCardDetails#0;class#AuthorisationTests#0" />
+                <element signature="e#2719#3259#0" />
+                <element signature="e#3280#3334#0" />
                 <element signature="method#testInvalidAuthorisationRequest_InsufficientFunds#0;class#AuthorisationTests#0" />
+                <element signature="e#3438#3949#0" />
+                <element signature="e#3970#4024#0" />
                 <element signature="method#testInvalidAuthorisationRequest_UnknownError#0;class#AuthorisationTests#0" />
-                <element signature="method#testInvalidAuthorisationRequest_ReturnAnUnregisteredValueFromBank#0;class#AuthorisationTests#0" />
+                <element signature="e#4277#4789#0" />
+                <element signature="e#4810#4864#0" />
+                <element signature="e#5666#5720#0" />
+                <element signature="e#6138#6192#0" />
                 <element signature="method#testInvalidAuthorisationRequest_AlreadyAuthorised#0;class#AuthorisationTests#0" />
+                <element signature="e#7582#7636#0" />
+                <element signature="method#testInvalidAuthorisationRequest_NegativeAmount#0;class#AuthorisationTests#0" />
+                <element signature="e#7896#8418#0" />
+                <element signature="e#8553#8607#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/Transaction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="78" selection-start-line="15" selection-start-column="72" selection-end-line="15" selection-end-column="78" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#setState#0;class#Transaction#0" />
+                <element signature="e#1610#1611#0" expanded="true" />
+                <element signature="e#1644#1645#0" expanded="true" />
+                <element signature="method#setDate#0;class#Transaction#0" />
               </folding>
             </state>
           </provider>
@@ -220,8 +213,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1241">
-              <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="72" />
+            <state relative-caret-position="406">
+              <caret line="272" selection-start-line="272" selection-end-line="272" />
               <folding>
                 <element signature="method#setup#0;class#CaptureTests#0" />
                 <element signature="method#teardown#0;class#CaptureTests#0" />
@@ -234,8 +227,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5695">
-              <caret line="353" selection-start-line="353" selection-end-line="353" />
+            <state relative-caret-position="307">
+              <caret line="313" column="19" lean-forward="true" selection-start-line="313" selection-start-column="19" selection-end-line="313" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -246,8 +239,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="90" column="9" lean-forward="true" selection-start-line="90" selection-start-column="9" selection-end-line="90" selection-end-column="9" />
+            <state relative-caret-position="68">
+              <caret line="233" selection-start-line="233" selection-end-line="233" />
               <folding>
                 <element signature="method#setup#0;class#PaymentProcessorTests#0" />
                 <element signature="method#teardown#0;class#PaymentProcessorTests#0" />
@@ -276,7 +269,6 @@
                 <element signature="method#testSingleOperation_ValidCCinfo_ValidAmount_InvalidTransactionID_Refund#0;class#PaymentProcessorTests#0" />
                 <element signature="method#testSingleOperation_InvalidCCinfo_InvalidAmount_InvalidTransactionID_Refund#0;class#PaymentProcessorTests#0" />
                 <element signature="method#testSingleOperation_VoidState#0;class#PaymentProcessorTests#0" />
-                <element signature="method#testSingleOperation_ResultsInVoidState#0;class#PaymentProcessorTests#0" />
                 <element signature="method#testSingleOperation_InvalidState#0;class#PaymentProcessorTests#0" />
                 <element signature="method#testSingleOperation_ValidDetails_Capture#0;class#PaymentProcessorTests#0" />
                 <element signature="method#testSingleOperation_ValidDetails_Refund#0;class#PaymentProcessorTests#0" />
@@ -297,16 +289,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>TestStates</find>
-      <find>getCardType</find>
-      <find>bank</find>
-      <find>paymentProcessor = new PaymentProcessor(bank, transactionDB,  logs);</find>
-      <find>CardTypes</find>
       <find>unk</find>
       <find>Card is expired</find>
       <find>States.AUTHORISE</find>
       <find>TestBankOperation.REFUND</find>
-      <find>bank = mock(BankProxy.class);</find>
       <find>States.REFUND</find>
       <find>TestBankOperation.CAPTURE</find>
       <find>&quot;refund&quot;</find>
@@ -327,6 +313,12 @@
       <find>expired</find>
       <find>auth_Transaction</find>
       <find>Calendar.getInstance()</find>
+      <find>when(bank.auth(ccInfo, amount)).thenReturn(-1L);</find>
+      <find>result = paymentProcessor.authorise(currentTransaction);</find>
+      <find>bank = mock(BankProxy.class);</find>
+      <find>result = paymentProcessor.capture(auth_Transaction);</find>
+      <find>result = paymentProcessor.refund(amount,bankAction, capt_Transaction);;</find>
+      <find>bank = mock(BankProxy.class);</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;11/20&quot;</replace>
@@ -348,6 +340,9 @@
       <replace>authorise</replace>
       <replace>capt_Transaction</replace>
       <replace>getPresentDate()</replace>
+      <replace>result = paymentProcessor.authorise(amount,currentTransaction);</replace>
+      <replace>result = paymentProcessor.capture(bankAction,auth_Transaction);</replace>
+      <replace>result = paymentProcessor.refund(amount,bankAction, capt_Transaction);</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -395,12 +390,12 @@
         <option value="$PROJECT_DIR$/src/main/java/VerifyOffline/VerifyOffline.java" />
         <option value="$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/DatabaseError.java" />
         <option value="$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/BankError.java" />
-        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java" />
-        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java" />
-        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java" />
-        <option value="$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java" />
         <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java" />
         <option value="$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java" />
+        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java" />
+        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java" />
+        <option value="$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java" />
       </list>
     </option>
   </component>
@@ -412,10 +407,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-276" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -425,8 +420,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -484,6 +479,14 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="PaymentProcessor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="assignment" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fund_Software_Test_Assignment" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="TransactionDatabase" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="assignment" type="b2602c69:ProjectViewProjectNode" />
@@ -558,7 +561,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546343720201" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546686148789" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -585,7 +588,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.VerifyOfflineTests_Date.testVerifyInvalidDate_withMissingDate">
+  <component name="RunManager" selected="JUnit.All in assignment">
     <configuration name="All in assignment" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assignment" />
       <option name="PACKAGE_NAME" value="" />
@@ -594,84 +597,80 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentProcessorTests.testSingleOperation_InvalidState" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_BankReturnsZero" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assignment" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PaymentProcessor.*" />
+          <option name="PATTERN" value="PaymentProcessor.AuthorisationTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="PaymentProcessor" />
-      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.PaymentProcessorTests" />
-      <option name="METHOD_NAME" value="testSingleOperation_InvalidState" />
+      <option name="PACKAGE_NAME" value="PaymentProcessor.AuthorisationTests" />
+      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.AuthorisationTests.AuthorisationTests" />
+      <option name="METHOD_NAME" value="testInvalidAuthorisationRequest_BankReturnsZero" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_NegativeAmount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assignment" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PaymentProcessor.*" />
+          <option name="PATTERN" value="PaymentProcessor.AuthorisationTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="PaymentProcessor" />
-      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.PaymentProcessorTests" />
-      <option name="METHOD_NAME" value="testSingleOperation_ResultsInVoidState" />
+      <option name="PACKAGE_NAME" value="PaymentProcessor.AuthorisationTests" />
+      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.AuthorisationTests.AuthorisationTests" />
+      <option name="METHOD_NAME" value="testInvalidAuthorisationRequest_NegativeAmount" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentProcessorTests.testSingleOperation_VoidState" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CaptureTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assignment" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="PaymentProcessor.*" />
+          <option name="PATTERN" value="PaymentProcessor.CaptureTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="PaymentProcessor" />
-      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.PaymentProcessorTests" />
-      <option name="METHOD_NAME" value="testSingleOperation_VoidState" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="PaymentProcessor.CaptureTests" />
+      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.CaptureTests.CaptureTests" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VerifyOfflineTests_Date.testVerifyInvalidDate_withMissingDate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RefundTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="assignment" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="VerifyOffline.*" />
+          <option name="PATTERN" value="PaymentProcessor.RefundTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="VerifyOffline" />
-      <option name="MAIN_CLASS_NAME" value="VerifyOffline.VerifyOfflineTests_Date" />
-      <option name="METHOD_NAME" value="testVerifyInvalidDate_withMissingDate" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="PaymentProcessor.RefundTests" />
+      <option name="MAIN_CLASS_NAME" value="PaymentProcessor.RefundTests.RefundTests" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.AuthorisationTests.testInvalidAuthorisationRequest_NegativeAmount" />
+      <item itemvalue="JUnit.AuthorisationTests.testInvalidAuthorisationRequest_BankReturnsZero" />
+      <item itemvalue="JUnit.CaptureTests" />
+      <item itemvalue="JUnit.RefundTests" />
       <item itemvalue="JUnit.All in assignment" />
-      <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_VoidState" />
-      <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_InvalidState" />
-      <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_ResultsInVoidState" />
-      <item itemvalue="JUnit.VerifyOfflineTests_Date.testVerifyInvalidDate_withMissingDate" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.VerifyOfflineTests_Date.testVerifyInvalidDate_withMissingDate" />
         <item itemvalue="JUnit.All in assignment" />
-        <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_ResultsInVoidState" />
-        <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_InvalidState" />
-        <item itemvalue="JUnit.PaymentProcessorTests.testSingleOperation_VoidState" />
+        <item itemvalue="JUnit.RefundTests" />
+        <item itemvalue="JUnit.CaptureTests" />
+        <item itemvalue="JUnit.AuthorisationTests.testInvalidAuthorisationRequest_BankReturnsZero" />
+        <item itemvalue="JUnit.AuthorisationTests.testInvalidAuthorisationRequest_NegativeAmount" />
       </list>
     </recent_temporary>
   </component>
@@ -714,44 +713,46 @@
       <workItem from="1546171812178" duration="22770000" />
       <workItem from="1546253845103" duration="17921000" />
       <workItem from="1546283386217" duration="1389000" />
-      <workItem from="1546335339814" duration="3587000" />
+      <workItem from="1546335339814" duration="7082000" />
+      <workItem from="1546426990190" duration="616000" />
+      <workItem from="1546677877714" duration="7291000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 18m 25s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests - 2019.01.05 at 09h 58m 42s.xml">
+      <configuration name="AuthorisationTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 19m 23s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests_testInvalidAuthorisationRequest_ReturnZeroFromBank - 2019.01.05 at 10h 04m 29s.xml">
+      <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_ReturnZeroFromBank" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 21m 13s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests_testInvalidAuthorisationRequest_ReturnAnUnregisteredValueFromBank - 2019.01.05 at 10h 05m 32s.xml">
+      <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_ReturnAnUnregisteredValueFromBank" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 21m 32s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests_testInvalidAuthorisationRequest_AlreadyAuthorised - 2019.01.05 at 10h 07m 36s.xml">
+      <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_AlreadyAuthorised" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 22m 03s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests_testInvalidAuthorisationRequest_NegativeAmount - 2019.01.05 at 10h 07m 58s.xml">
+      <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_NegativeAmount" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 22m 13s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="AuthorisationTests_testInvalidAuthorisationRequest_BankReturnsZero - 2019.01.05 at 10h 13m 51s.xml">
+      <configuration name="AuthorisationTests.testInvalidAuthorisationRequest_BankReturnsZero" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PaymentProcessorTests_testSingleOperation_ResultsInVoidState - 2018.12.31 at 20h 22m 33s.xml">
-      <configuration name="PaymentProcessorTests.testSingleOperation_ResultsInVoidState" configurationId="JUnit" />
+    <history-entry file="CaptureTests - 2019.01.05 at 10h 34m 02s.xml">
+      <configuration name="CaptureTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_assignment - 2018.12.31 at 20h 22m 45s.xml">
-      <configuration name="All in assignment" configurationId="JUnit" />
+    <history-entry file="CaptureTests - 2019.01.05 at 10h 35m 42s.xml">
+      <configuration name="CaptureTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_assignment - 2019.01.01 at 11h 11m 09s.xml">
-      <configuration name="All in assignment" configurationId="JUnit" />
+    <history-entry file="RefundTests - 2019.01.05 at 11h 25m 51s.xml">
+      <configuration name="RefundTests" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_assignment - 2019.01.01 at 11h 13m 32s.xml">
+    <history-entry file="All_in_assignment - 2019.01.05 at 11h 27m 37s.xml">
       <configuration name="All in assignment" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="226069000" />
+    <option name="totallyTimeSpent" value="237471000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -766,7 +767,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18336888" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23987207" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -775,14 +776,14 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.329718" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49520257" weight="0.6013001" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49520257" weight="0.40195015" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4989339" weight="0.26868907" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49840087" weight="0.32936078" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5010661" side_tool="true" weight="0.3943662" />
-      <window_info anchor="bottom" id="Version Control" order="9" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4904051" weight="0.26435536" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
@@ -859,12 +860,6 @@
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java</url>
-          <line>274</line>
-          <properties />
-          <option name="timeStamp" value="93" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java</url>
           <line>120</line>
           <properties />
@@ -920,7 +915,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java</url>
-          <line>203</line>
+          <line>192</line>
           <properties />
           <option name="timeStamp" value="183" />
         </line-breakpoint>
@@ -949,12 +944,6 @@
           <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java</url>
-          <line>230</line>
-          <properties />
-          <option name="timeStamp" value="197" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java</url>
           <line>463</line>
           <properties />
@@ -962,7 +951,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java</url>
-          <line>239</line>
+          <line>229</line>
           <properties />
           <option name="timeStamp" value="199" />
         </line-breakpoint>
@@ -998,11 +987,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java</url>
-          <line>254</line>
-          <properties class="PaymentProcessor.CaptureTests.CaptureTests" method="testInvalidCaptureProcess_ReturnPositiveUnregisteredValueFromBank">
+          <line>238</line>
+          <properties class="PaymentProcessor.CaptureTests.CaptureTests">
             <option name="EMULATED" value="true" />
           </properties>
           <option name="timeStamp" value="185" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java</url>
+          <line>191</line>
+          <properties class="PaymentProcessor.AuthorisationTests.AuthorisationTests" method="testInvalidAuthorisationRequest_AlreadyAuthorised">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="207" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1190,18 +1187,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/TransactionDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="13" column="57" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#saveTransaction#0;class#TransactionDatabase#0" />
-            <element signature="method#getTransactionByTransactionID#0;class#TransactionDatabase#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/enums/States.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1341,44 +1326,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/Transaction.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-          <folding>
-            <element signature="method#setState#0;class#Transaction#0" />
-            <element signature="e#1644#1645#0" expanded="true" />
-            <element signature="method#setDate#0;class#Transaction#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5695">
-          <caret line="353" selection-start-line="353" selection-end-line="353" />
+        <state relative-caret-position="986">
+          <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="72" />
-          <folding>
-            <element signature="method#setup#0;class#CaptureTests#0" />
-            <element signature="method#teardown#0;class#CaptureTests#0" />
-            <element signature="method#getPresentDate#0;class#CaptureTests#0" />
-          </folding>
+        <state relative-caret-position="1530">
+          <caret line="114" selection-start-line="114" selection-end-line="114" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/BankError.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/DatabaseError.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="22" />
+        <state relative-caret-position="68">
+          <caret line="4" column="24" selection-end-line="8" />
         </state>
       </provider>
     </entry>
@@ -1415,40 +1383,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/BankError.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="54" />
-          <folding>
-            <element signature="method#setup#0;class#AuthorisationTests#0" />
-            <element signature="method#teardown#0;class#AuthorisationTests#0" />
-            <element signature="method#testInvalidAuthorisationRequest_InvalidCreditCardDetails#0;class#AuthorisationTests#0" />
-            <element signature="method#testInvalidAuthorisationRequest_InsufficientFunds#0;class#AuthorisationTests#0" />
-            <element signature="method#testInvalidAuthorisationRequest_UnknownError#0;class#AuthorisationTests#0" />
-            <element signature="method#testInvalidAuthorisationRequest_ReturnAnUnregisteredValueFromBank#0;class#AuthorisationTests#0" />
-            <element signature="method#testInvalidAuthorisationRequest_AlreadyAuthorised#0;class#AuthorisationTests#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/ErrorMessages/DatabaseError.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="24" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.4/junit-4.4.jar!/org/junit/internal/runners/MethodRoadie.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="114" selection-start-line="114" selection-end-line="114" />
+        <state relative-caret-position="34">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/PaymentProcessorTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="90" column="9" lean-forward="true" selection-start-line="90" selection-start-column="9" selection-end-line="90" selection-end-column="9" />
+        <state relative-caret-position="68">
+          <caret line="233" selection-start-line="233" selection-end-line="233" />
           <folding>
             <element signature="method#setup#0;class#PaymentProcessorTests#0" />
             <element signature="method#teardown#0;class#PaymentProcessorTests#0" />
@@ -1477,7 +1422,6 @@
             <element signature="method#testSingleOperation_ValidCCinfo_ValidAmount_InvalidTransactionID_Refund#0;class#PaymentProcessorTests#0" />
             <element signature="method#testSingleOperation_InvalidCCinfo_InvalidAmount_InvalidTransactionID_Refund#0;class#PaymentProcessorTests#0" />
             <element signature="method#testSingleOperation_VoidState#0;class#PaymentProcessorTests#0" />
-            <element signature="method#testSingleOperation_ResultsInVoidState#0;class#PaymentProcessorTests#0" />
             <element signature="method#testSingleOperation_InvalidState#0;class#PaymentProcessorTests#0" />
             <element signature="method#testSingleOperation_ValidDetails_Capture#0;class#PaymentProcessorTests#0" />
             <element signature="method#testSingleOperation_ValidDetails_Refund#0;class#PaymentProcessorTests#0" />
@@ -1485,10 +1429,89 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/AuthorisationTests/AuthorisationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="83">
+          <caret line="156" column="96" lean-forward="true" selection-start-line="156" selection-start-column="96" selection-end-line="156" selection-end-column="96" />
+          <folding>
+            <element signature="method#setup#0;class#AuthorisationTests#0" />
+            <element signature="method#teardown#0;class#AuthorisationTests#0" />
+            <element signature="method#getPresentDate#0;class#AuthorisationTests#0" />
+            <element signature="method#testValidAuthorisationRequest#0;class#AuthorisationTests#0" />
+            <element signature="e#1712#2260#0" />
+            <element signature="e#2281#2335#0" />
+            <element signature="method#testInvalidAuthorisationRequest_InvalidCreditCardDetails#0;class#AuthorisationTests#0" />
+            <element signature="e#2719#3259#0" />
+            <element signature="e#3280#3334#0" />
+            <element signature="method#testInvalidAuthorisationRequest_InsufficientFunds#0;class#AuthorisationTests#0" />
+            <element signature="e#3438#3949#0" />
+            <element signature="e#3970#4024#0" />
+            <element signature="method#testInvalidAuthorisationRequest_UnknownError#0;class#AuthorisationTests#0" />
+            <element signature="e#4277#4789#0" />
+            <element signature="e#4810#4864#0" />
+            <element signature="e#5666#5720#0" />
+            <element signature="e#6138#6192#0" />
+            <element signature="method#testInvalidAuthorisationRequest_AlreadyAuthorised#0;class#AuthorisationTests#0" />
+            <element signature="e#7582#7636#0" />
+            <element signature="method#testInvalidAuthorisationRequest_NegativeAmount#0;class#AuthorisationTests#0" />
+            <element signature="e#7896#8418#0" />
+            <element signature="e#8553#8607#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/CaptureTests/CaptureTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="272" selection-start-line="272" selection-end-line="272" />
+          <folding>
+            <element signature="method#setup#0;class#CaptureTests#0" />
+            <element signature="method#teardown#0;class#CaptureTests#0" />
+            <element signature="method#getPresentDate#0;class#CaptureTests#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/PaymentProcessor/RefundTests/RefundTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="313" column="19" lean-forward="true" selection-start-line="313" selection-start-column="19" selection-end-line="313" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/Transaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="78" selection-start-line="15" selection-start-column="72" selection-end-line="15" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setState#0;class#Transaction#0" />
+            <element signature="e#1610#1611#0" expanded="true" />
+            <element signature="e#1644#1645#0" expanded="true" />
+            <element signature="method#setDate#0;class#Transaction#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TransactionDatabase/TransactionDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="13" column="57" selection-start-line="13" selection-start-column="57" selection-end-line="13" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#saveTransaction#0;class#TransactionDatabase#0" />
+            <element signature="method#getTransactionByTransactionID#0;class#TransactionDatabase#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/PaymentProcessor/PaymentProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="216" lean-forward="true" selection-start-line="216" selection-end-line="216" />
+        <state relative-caret-position="374">
+          <caret line="191" column="58" selection-start-line="191" selection-start-column="58" selection-end-line="191" selection-end-column="58" />
           <folding>
             <element signature="method#PaymentProcessor#0;class#PaymentProcessor#0" />
             <element signature="method#PaymentProcessor#1;class#PaymentProcessor#0" />
@@ -1504,42 +1527,11 @@
             <element signature="e#2460#2860#1" />
             <element signature="e#2548#2793#1" />
             <element signature="e#2650#2726#1" />
-            <element signature="method#processPayment#0;class#PaymentProcessor#0" />
-            <element signature="e#3289#3828#0" />
-            <element signature="e#3647#3790#1" />
-            <element signature="e#3853#3931#0" />
-            <element signature="e#3952#4026#0" />
-            <element signature="e#4047#4175#0" />
-            <element signature="e#4199#4327#0" />
-            <element signature="e#4348#4439#0" />
-            <element signature="method#processPayment#1;class#PaymentProcessor#0" />
-            <element signature="e#4628#5256#0" />
-            <element signature="e#5079#5218#1" />
-            <element signature="e#5281#5359#0" />
-            <element signature="e#5380#5454#0" />
-            <element signature="e#5475#5603#0" />
-            <element signature="e#5627#5755#0" />
-            <element signature="e#5776#5867#0" />
-            <element signature="method#processPayment#2;class#PaymentProcessor#0" />
-            <element signature="e#6136#6772#0" />
-            <element signature="e#6586#6734#1" />
-            <element signature="e#6797#6875#0" />
-            <element signature="e#6896#6970#0" />
-            <element signature="e#6991#7119#0" />
-            <element signature="e#7143#7271#0" />
-            <element signature="e#7292#7383#0" />
             <element signature="method#setTransactionToInvalid#0;class#PaymentProcessor#0" />
             <element signature="e#7554#7755#1" />
-            <element signature="method#authorise#0;class#PaymentProcessor#0" />
-            <element signature="e#7896#8017#0" />
-            <element signature="e#8450#9179#1" />
-            <element signature="e#8500#9107#1" />
-            <element signature="e#8548#8983#1" />
-            <element signature="e#8989#9092#1" />
             <element signature="e#9210#9289#1" />
             <element signature="e#9320#9401#1" />
             <element signature="e#9432#9481#1" />
-            <element signature="method#capture#0;class#PaymentProcessor#0" />
             <element signature="e#10074#10195#0" />
             <element signature="e#10403#11437#1" />
             <element signature="e#10568#10984#1" />
@@ -1549,8 +1541,6 @@
             <element signature="e#11569#11656#1" />
             <element signature="e#11841#12231#1" />
             <element signature="e#12259#12309#1" />
-            <element signature="method#refund#0;class#PaymentProcessor#0" />
-            <element signature="e#12824#12945#0" />
             <element signature="e#13149#14489#1" />
             <element signature="e#13416#13832#1" />
             <element signature="e#14014#14092#1" />
@@ -1561,16 +1551,6 @@
             <element signature="e#14847#14935#1" />
             <element signature="e#14963#15014#1" />
             <element signature="method#getPresentDate#0;class#PaymentProcessor#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/VerifyOffline/VerifyOfflineTests_Date.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="67" column="26" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

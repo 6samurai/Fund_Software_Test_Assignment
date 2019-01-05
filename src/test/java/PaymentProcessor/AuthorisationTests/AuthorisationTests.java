@@ -61,14 +61,12 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
             transactionID = 10L;
-            when(bank.auth(ccInfo, 1000)).thenReturn(transactionID);
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.authorise(currentTransaction);
+                    result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -86,14 +84,13 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
-            transactionID = 10L;
-            when(bank.auth(ccInfo, amount)).thenReturn(-1L);
+
+            transactionID = -1L;
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.authorise(currentTransaction);
+                    result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -110,14 +107,12 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = 1000L;
-            bank = mock(BankProxy.class);
-            transactionID = 10L;
-            when(bank.auth(ccInfo, amount)).thenReturn(-2L);
+            transactionID = -2L;
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.authorise(currentTransaction);
+            result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -134,15 +129,13 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = 1000L;
-            transactionID = 10L;
-            bank = mock(BankProxy.class);
-            when(bank.auth(ccInfo, amount)).thenReturn(-3L);
+            transactionID = -3L;
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
 
-            result = paymentProcessor.authorise(currentTransaction);
+            result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -158,15 +151,14 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = 1000L;
-            transactionID = 10L;
-            bank = mock(BankProxy.class);
-            when(bank.auth(ccInfo, amount)).thenReturn(-4L);
+            transactionID = -4L;
+
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
 
-            result = paymentProcessor.authorise(currentTransaction);
+            result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -175,21 +167,20 @@ public class AuthorisationTests {
     }
 
     @Test
-    public void testInvalidAuthorisationRequest_ReturnZeroFromBank() {
+    public void testInvalidAuthorisationRequest_BankReturnsZero() {
         String exceptionMsg = "";
         int result = -1;
         try {
             //setup
             long amount = 1000L;
-            transactionID = 10L;
-            bank = mock(BankProxy.class);
-            when(bank.auth(ccInfo, amount)).thenReturn(0L);
+            transactionID = 0L;
+
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
 
-            result = paymentProcessor.authorise(currentTransaction);
+            result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -205,8 +196,8 @@ public class AuthorisationTests {
             //setup
             long amount = 1000L;
             transactionID = 10L;
-            bank = mock(BankProxy.class);
-            when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
+            
+
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             Transaction auth_Transaction = new Transaction(0, transactionID, ccInfo, amount, TestBankOperation.AUTHORISED.toString().toLowerCase(), getPresentDate());
             transactionDB.saveTransaction(auth_Transaction);
@@ -214,7 +205,7 @@ public class AuthorisationTests {
 
             //exercise
 
-            result = paymentProcessor.authorise(currentTransaction);
+                    result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
@@ -230,14 +221,12 @@ public class AuthorisationTests {
         try {
             //setup
             long amount = -1000L;
-            bank = mock(BankProxy.class);
             transactionID = 10L;
-            when(bank.auth(ccInfo, amount)).thenReturn(transactionID);
             currentTransaction = new Transaction(transactionDB.countTransactions(), -1L, ccInfo, amount, "", getPresentDate());
             PaymentProcessor paymentProcessor = new PaymentProcessor(bank, transactionDB, logs);
 
             //exercise
-            result = paymentProcessor.authorise(currentTransaction);
+                    result = paymentProcessor.authorise(transactionID,currentTransaction);
         } catch (Exception e) {
             exceptionMsg = e.getMessage();
         }
